@@ -25,7 +25,7 @@ body {
 }
 h1 { margin: 0 0 8px; color: #0f4c81; }
 .subtitle { margin: 0 0 14px; color: #3f6e98; }
-.toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.toolbar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
 .mode-btn, .difficulty-btn, .action-btn, .option-btn {
   border: none;
   border-radius: 10px;
@@ -33,14 +33,80 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
   transition: .2s;
   font-weight: 700;
 }
+.session-select {
+  background: #e3f2fd;
+  color: #0f4c81;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+}
+.goal-input {
+  width: 84px;
+  background: #e3f2fd;
+  color: #0f4c81;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+}
+.goal-label {
+  color: #0f4c81;
+  font-weight: 700;
+}
+.toggle-active {
+  background: #0f4c81 !important;
+  color: #fff !important;
+}
 .mode-btn, .difficulty-btn {
   background: #e3f2fd;
   color: #0f4c81;
   padding: 8px 12px;
 }
 .mode-btn.active, .difficulty-btn.active { background: #0f4c81; color: #fff; }
-.difficulty-group { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+.difficulty-group { display: flex; gap: 6px; flex-wrap: wrap; }
+.primary-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.config-panel {
+  border: 1px solid #d9e8f8;
+  border-radius: 10px;
+  background: #f8fcff;
+  padding: 8px 10px;
+}
+.config-panel summary {
+  cursor: pointer;
+  color: #0f4c81;
+  font-weight: 700;
+}
+.config-body {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.config-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
 .stats { color: #0f4c81; font-weight: 600; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 12px; }
+.meta-chip {
+  margin: 2px 0 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e9f4ff;
+  color: #0f4c81;
+  border: 1px solid #d2e7fb;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-weight: 700;
+}
 .progress-wrap { width: 100%; height: 10px; background: #dbe8f5; border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
 .progress-bar { width: 0%; height: 100%; background: #1e88e5; transition: width .35s ease; }
 .timer { color: #d32f2f; font-weight: 700; margin-bottom: 10px; }
@@ -149,35 +215,117 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
   margin-top: 8px;
   font-weight: 700;
 }
+.welcome-screen {
+  border: 2px solid #e6f0fb;
+  border-radius: 16px;
+  padding: 26px;
+  background: linear-gradient(180deg, #f8fcff, #eef6ff);
+  text-align: center;
+  margin-bottom: 12px;
+}
+.welcome-title {
+  margin: 0 0 8px;
+  color: #0f4c81;
+}
+.welcome-text {
+  margin: 0 0 16px;
+  color: #3a668f;
+}
+.welcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.start-btn {
+  background: #0f4c81;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
 </style>
 </head>
 <body>
 <div class="app">
   <h1>Instrumentos Cirúrgicos</h1>
-  <p class="subtitle">Lista oficial + flashcards + quiz com treino adaptativo.</p>
+  <p class="subtitle">Escolha o modo de estudo para começar.</p>
 
-  <div class="toolbar">
-    <button id="flashModeBtn" class="mode-btn active" type="button" onclick="setMode('flashcard')">Flashcards</button>
-    <button id="quizModeBtn" class="mode-btn" type="button" onclick="setMode('quiz')">Quiz</button>
-    <button id="listModeBtn" class="mode-btn" type="button" onclick="setMode('lista')">Lista</button>
-
-    <div class="difficulty-group" id="difficultyGroup">
-      <button id="facilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('facil')">Fácil</button>
-      <button id="medioBtn" class="difficulty-btn active" type="button" onclick="setDifficulty('medio')">Médio</button>
-      <button id="dificilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('dificil')">Difícil</button>
+  <div id="welcomeScreen" class="welcome-screen">
+    <h2 class="welcome-title">Como você quer estudar hoje?</h2>
+    <p class="welcome-text">Selecione um modo para iniciar: flashcards, quiz ou lista completa.</p>
+    <div class="welcome-actions">
+      <button class="start-btn" type="button" onclick="startStudy('flashcard')">Flashcards</button>
+      <button class="start-btn" type="button" onclick="startStudy('quiz')">Quiz</button>
+      <button class="start-btn" type="button" onclick="startStudy('lista')">Lista</button>
     </div>
   </div>
 
+  <div id="studyArea" class="hidden">
+
+  <div class="toolbar">
+    <div class="primary-row">
+      <button id="flashModeBtn" class="mode-btn active" type="button" onclick="setMode('flashcard')">Flashcards</button>
+      <button id="quizModeBtn" class="mode-btn" type="button" onclick="setMode('quiz')">Quiz</button>
+      <button id="listModeBtn" class="mode-btn" type="button" onclick="setMode('lista')">Lista</button>
+      <button class="mode-btn" type="button" onclick="resetAnalise()">Resetar análise</button>
+    </div>
+
+    <details class="config-panel">
+      <summary>Configurações da sessão</summary>
+      <div class="config-body">
+        <div class="config-row">
+          <select id="groupFilter" class="session-select" onchange="setGroupFilter()">
+            <option value="all" selected>Grupo: Todos</option>
+            <option value="Preensão">Preensão</option>
+            <option value="Hemostasia">Hemostasia</option>
+            <option value="Exposição">Exposição</option>
+            <option value="Especiais">Especiais</option>
+            <option value="Porta-Agulhas">Porta-Agulhas</option>
+          </select>
+          <button id="favoritesBtn" class="mode-btn" type="button" onclick="toggleOnlyFavorites()">Favoritos</button>
+          <button id="lastErrorsBtn" class="mode-btn" type="button" onclick="toggleOnlyLastErrors()">Só erros (última sessão)</button>
+        </div>
+
+        <div class="config-row">
+          <select id="sessionSize" class="session-select" onchange="applySessionSize(true)">
+            <option value="10">10 cards</option>
+            <option value="20" selected>20 cards</option>
+            <option value="40">40 cards</option>
+            <option value="60">60 cards</option>
+            <option value="all">Todos</option>
+          </select>
+          <span class="goal-label">Meta diária:</span>
+          <input id="dailyGoalInput" class="goal-input" type="number" min="1" step="1" value="30" onchange="updateDailyGoal()" title="Meta diária de cards">
+          <button class="mode-btn" type="button" onclick="applySessionSize(true)">Sortear sessão</button>
+        </div>
+
+        <div class="config-row difficulty-group" id="difficultyGroup">
+          <select id="quizType" class="session-select" onchange="setQuizType()">
+            <option value="tempo" selected>Quiz: Tempo</option>
+            <option value="nome">Quiz: Nome</option>
+          </select>
+          <button id="facilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('facil')">Fácil</button>
+          <button id="medioBtn" class="difficulty-btn active" type="button" onclick="setDifficulty('medio')">Médio</button>
+          <button id="dificilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('dificil')">Difícil</button>
+        </div>
+      </div>
+    </details>
+  </div>
+
   <div class="stats" id="stats"></div>
+  <div class="meta-chip" id="dailyGoalChip">🎯 Meta diária: 30 cards</div>
   <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
   <div id="timer" class="timer hidden">Tempo: 15s</div>
   <div id="card" class="card"></div>
+  </div>
 </div>
 
 <div id="zoomOverlay" class="zoom-overlay" onclick="closeZoom()">
   <div class="zoom-content" onclick="event.stopPropagation()">
     <img id="zoomImg" class="zoom-img" alt="Zoom">
-    <div id="zoomCaption" class="zoom-caption"></div>
   </div>
 </div>
 
@@ -278,9 +426,21 @@ let flashFront = "imagem";
 let quizPerguntas = [];
 let quizIndex = 0;
 let quizScore = 0;
+let quizType = "tempo";
 let tempoRestante = difficultyTimes[difficulty];
 let timerRef = null;
 let waitingNext = false;
+let sessionCards = [];
+let selectedGroup = "all";
+let onlyFavorites = false;
+let onlyLastSessionErrors = false;
+let flashSeenInSession = new Set();
+let currentQuizSessionErrorKeys = new Set();
+let sessionAnswerMetrics = [];
+
+const favoriteCards = JSON.parse(localStorage.getItem("favoriteCards")) || [];
+const lastSessionErrorCards = JSON.parse(localStorage.getItem("lastSessionErrorCards")) || [];
+const dailyStudyData = JSON.parse(localStorage.getItem("dailyStudyData")) || { goal: 30, progressByDate: {} };
 
 const errosPorInstrumento = JSON.parse(localStorage.getItem("errosInstrumentos")) || {};
 const historicoPontuacoes = JSON.parse(localStorage.getItem("historicoPontuacoes")) || [];
@@ -288,6 +448,9 @@ const historicoPontuacoes = JSON.parse(localStorage.getItem("historicoPontuacoes
 function saveStorage() {
   localStorage.setItem("errosInstrumentos", JSON.stringify(errosPorInstrumento));
   localStorage.setItem("historicoPontuacoes", JSON.stringify(historicoPontuacoes));
+  localStorage.setItem("favoriteCards", JSON.stringify(favoriteCards));
+  localStorage.setItem("lastSessionErrorCards", JSON.stringify(lastSessionErrorCards));
+  localStorage.setItem("dailyStudyData", JSON.stringify(dailyStudyData));
 }
 
 function shuffle(array) {
@@ -299,20 +462,237 @@ function shuffle(array) {
   return copy;
 }
 
-function imageHtml(item, className = "visual") {
-  const safeName = item.nome.replace(/'/g, "\\'");
-  const safeImage = item.imagem.replace(/'/g, "\\'");
-  return `<div class="${className}"><img src="${item.imagem}" alt="${item.nome}" onclick="openZoom('${safeImage}','${safeName}')" onerror="this.parentElement.textContent='${item.nome}'; this.remove();"></div>`;
+function getCardKey(item) {
+  return item.imagem;
 }
 
-function openZoom(src, caption) {
+function isFavorite(item) {
+  return favoriteCards.includes(getCardKey(item));
+}
+
+function toggleFavorite(item) {
+  const key = getCardKey(item);
+  const index = favoriteCards.indexOf(key);
+  if (index >= 0) {
+    favoriteCards.splice(index, 1);
+  } else {
+    favoriteCards.push(key);
+  }
+  saveStorage();
+  if (mode === "lista") {
+    renderListMode();
+  } else if (mode === "quiz") {
+    renderQuizQuestion();
+  } else {
+    renderFlashcard();
+  }
+  renderStats();
+}
+
+function setGroupFilter() {
+  selectedGroup = document.getElementById("groupFilter").value;
+  applySessionSize(true);
+}
+
+function toggleOnlyFavorites() {
+  onlyFavorites = !onlyFavorites;
+  document.getElementById("favoritesBtn").classList.toggle("toggle-active", onlyFavorites);
+  applySessionSize(true);
+}
+
+function toggleOnlyLastErrors() {
+  onlyLastSessionErrors = !onlyLastSessionErrors;
+  document.getElementById("lastErrorsBtn").classList.toggle("toggle-active", onlyLastSessionErrors);
+  applySessionSize(true);
+}
+
+function getTodayKey() {
+  return new Date().toLocaleDateString("sv-SE");
+}
+
+function shiftDate(dateKey, deltaDays) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const dt = new Date(year, month - 1, day);
+  dt.setDate(dt.getDate() + deltaDays);
+  return dt.toLocaleDateString("sv-SE");
+}
+
+function updateDailyGoal() {
+  const value = Number(document.getElementById("dailyGoalInput").value);
+  if (!Number.isNaN(value) && value > 0) {
+    dailyStudyData.goal = Math.floor(value);
+    saveStorage();
+    renderStats();
+  }
+}
+
+function recordAnswerMetric(correct, timedOut = false) {
+  const totalTime = difficultyTimes[difficulty] || 15;
+  const elapsed = timedOut ? totalTime : Math.max(0, totalTime - tempoRestante);
+  sessionAnswerMetrics.push({ correct, timedOut, elapsed });
+}
+
+function buildQuizInsights() {
+  if (sessionAnswerMetrics.length === 0) {
+    return ["Sem dados suficientes para análise nesta sessão."];
+  }
+
+  const insights = [];
+  const total = sessionAnswerMetrics.length;
+  const wrong = sessionAnswerMetrics.filter((item) => !item.correct);
+  const correct = sessionAnswerMetrics.filter((item) => item.correct);
+  const timeouts = sessionAnswerMetrics.filter((item) => item.timedOut).length;
+
+  const avg = (arr) => arr.length ? arr.reduce((sum, item) => sum + item.elapsed, 0) / arr.length : 0;
+  const avgWrong = avg(wrong);
+  const avgCorrect = avg(correct);
+
+  if (wrong.length > 0 && correct.length > 0 && avgWrong + 1 < avgCorrect) {
+    insights.push("Você tende a errar quando responde rápido demais.");
+  }
+
+  if (timeouts / total >= 0.25) {
+    insights.push("Parte dos erros veio por tempo esgotado; tente ajustar ritmo ou dificuldade.");
+  }
+
+  if (wrong.length > 0 && timeouts === 0 && avgWrong >= avgCorrect) {
+    insights.push("Seus erros parecem mais por dúvida visual do que por pressa.");
+  }
+
+  if (insights.length === 0) {
+    insights.push("Ritmo equilibrado na sessão. Continue o treino direcionado.");
+  }
+
+  return insights;
+}
+
+function addDailyProgress(amount = 1) {
+  const today = getTodayKey();
+  if (!dailyStudyData.progressByDate[today]) dailyStudyData.progressByDate[today] = 0;
+  dailyStudyData.progressByDate[today] += amount;
+  saveStorage();
+}
+
+function getDailyProgress() {
+  const today = getTodayKey();
+  return dailyStudyData.progressByDate[today] || 0;
+}
+
+function getCurrentStreak() {
+  const goal = dailyStudyData.goal || 30;
+  let cursor = getTodayKey();
+  let streak = 0;
+
+  while ((dailyStudyData.progressByDate[cursor] || 0) >= goal) {
+    streak += 1;
+    cursor = shiftDate(cursor, -1);
+  }
+
+  return streak;
+}
+
+function getFilteredBaseCards() {
+  let filtered = [...instrumentos];
+
+  if (selectedGroup !== "all") {
+    filtered = filtered.filter((item) => item.tempo === selectedGroup);
+  }
+
+  if (onlyFavorites) {
+    filtered = filtered.filter((item) => favoriteCards.includes(getCardKey(item)));
+  }
+
+  if (onlyLastSessionErrors) {
+    filtered = filtered.filter((item) => lastSessionErrorCards.includes(getCardKey(item)));
+  }
+
+  return filtered;
+}
+
+function getRequestedSessionCount() {
+  const select = document.getElementById("sessionSize");
+  const value = select ? select.value : "all";
+  if (value === "all") return instrumentos.length;
+  const parsed = Number(value);
+  if (Number.isNaN(parsed) || parsed <= 0) return instrumentos.length;
+  return Math.min(parsed, instrumentos.length);
+}
+
+function buildSessionCards() {
+  const filteredBase = getFilteredBaseCards();
+  const count = Math.min(getRequestedSessionCount(), filteredBase.length);
+  const shuffled = shuffle(filteredBase);
+  return shuffled.slice(0, count);
+}
+
+function applySessionSize(refreshView) {
+  sessionCards = buildSessionCards();
+  flashIndex = 0;
+  waitingNext = false;
+  flashSeenInSession = new Set();
+
+  if (!refreshView) return;
+
+  if (mode === "quiz") {
+    startQuiz();
+  } else if (mode === "lista") {
+    renderListMode();
+  } else {
+    renderFlashcard();
+  }
+
+  renderStats();
+}
+
+function imageHtml(item, className = "visual") {
+  const safeImage = item.imagem.replace(/'/g, "\\'");
+  return `<div class="${className}"><img src="${item.imagem}" alt="${item.nome}" onclick="openZoom('${safeImage}')" onerror="this.parentElement.textContent='${item.nome}'; this.remove();"></div>`;
+}
+
+function openZoom(src) {
   document.getElementById("zoomImg").src = src;
-  document.getElementById("zoomCaption").textContent = caption;
   document.getElementById("zoomOverlay").classList.add("open");
 }
 
 function closeZoom() {
   document.getElementById("zoomOverlay").classList.remove("open");
+}
+
+function startStudy(initialMode) {
+  document.getElementById("dailyGoalInput").value = dailyStudyData.goal || 30;
+  applySessionSize(false);
+  document.getElementById("welcomeScreen").classList.add("hidden");
+  document.getElementById("studyArea").classList.remove("hidden");
+  setMode(initialMode);
+}
+
+function resetAnalise() {
+  const confirmar = confirm("Deseja resetar toda a análise? Isso limpa histórico de pontuações e erros por instrumento.");
+  if (!confirmar) return;
+
+  Object.keys(errosPorInstrumento).forEach((key) => delete errosPorInstrumento[key]);
+  historicoPontuacoes.length = 0;
+  favoriteCards.length = 0;
+  lastSessionErrorCards.length = 0;
+  dailyStudyData.progressByDate = {};
+  localStorage.removeItem("errosInstrumentos");
+  localStorage.removeItem("historicoPontuacoes");
+  localStorage.removeItem("favoriteCards");
+  localStorage.removeItem("lastSessionErrorCards");
+  localStorage.removeItem("dailyStudyData");
+
+  quizScore = 0;
+  quizIndex = 0;
+
+  renderStats();
+
+  if (mode === "quiz") {
+    startQuiz();
+  } else if (mode === "lista") {
+    renderListMode();
+  } else {
+    renderFlashcard();
+  }
 }
 
 document.addEventListener("keydown", (event) => {
@@ -351,14 +731,19 @@ function setDifficulty(level) {
   if (mode === "quiz") startQuiz();
 }
 
+function setQuizType() {
+  quizType = document.getElementById("quizType").value;
+  if (mode === "quiz") startQuiz();
+}
+
 function nextFlash() {
-  flashIndex = (flashIndex + 1) % instrumentos.length;
+  flashIndex = (flashIndex + 1) % sessionCards.length;
   flashFront = "imagem";
   renderFlashcard();
 }
 
 function prevFlash() {
-  flashIndex = (flashIndex - 1 + instrumentos.length) % instrumentos.length;
+  flashIndex = (flashIndex - 1 + sessionCards.length) % sessionCards.length;
   flashFront = "imagem";
   renderFlashcard();
 }
@@ -370,7 +755,15 @@ function flipFlash() {
 
 function renderFlashcard() {
   const cardEl = document.getElementById("card");
-  const item = instrumentos[flashIndex];
+  const item = sessionCards[flashIndex];
+
+  if (!item) {
+    cardEl.innerHTML = `<p class="desc">Nenhum card disponível nesta sessão.</p>`;
+    updateProgress(0);
+    return;
+  }
+
+  const favoriteLabel = isFavorite(item) ? "★ Favorito" : "☆ Favoritar";
 
   if (flashFront === "imagem") {
     cardEl.innerHTML = `
@@ -380,6 +773,7 @@ function renderFlashcard() {
       <div class="controls">
         <button class="action-btn" type="button" onclick="prevFlash()">Anterior</button>
         <button class="action-btn" type="button" onclick="flipFlash()">Virar</button>
+        <button class="action-btn" type="button" onclick="toggleFavorite(sessionCards[flashIndex])">${favoriteLabel}</button>
         <button class="action-btn" type="button" onclick="nextFlash()">Próximo</button>
       </div>
     `;
@@ -392,12 +786,19 @@ function renderFlashcard() {
       <div class="controls">
         <button class="action-btn" type="button" onclick="prevFlash()">Anterior</button>
         <button class="action-btn" type="button" onclick="flipFlash()">Voltar</button>
+        <button class="action-btn" type="button" onclick="toggleFavorite(sessionCards[flashIndex])">${favoriteLabel}</button>
         <button class="action-btn" type="button" onclick="nextFlash()">Próximo</button>
       </div>
     `;
   }
 
-  updateProgress(((flashIndex + 1) / instrumentos.length) * 100);
+  const key = getCardKey(item);
+  if (!flashSeenInSession.has(key)) {
+    flashSeenInSession.add(key);
+    addDailyProgress(1);
+  }
+
+  updateProgress(((flashIndex + 1) / sessionCards.length) * 100);
 }
 
 function renderListMode() {
@@ -405,7 +806,7 @@ function renderListMode() {
   cardEl.innerHTML = `<div class="list-grid" id="listGrid"></div>`;
   const grid = document.getElementById("listGrid");
 
-  instrumentos.forEach((item) => {
+  sessionCards.forEach((item, index) => {
     const el = document.createElement("div");
     el.className = "list-item";
     el.innerHTML = `
@@ -415,6 +816,7 @@ function renderListMode() {
       <h4>${item.nome}</h4>
       <p>Tempo: ${item.tempo}</p>
       <p>Grupo: ${item.grupo}</p>
+      <button class="action-btn" type="button" onclick="toggleFavorite(sessionCards[${index}])">${isFavorite(item) ? "★ Favorito" : "☆ Favoritar"}</button>
     `;
     grid.appendChild(el);
   });
@@ -428,7 +830,7 @@ function registrarErro(nome) {
 
 function getAdaptivePool() {
   const pool = [];
-  instrumentos.forEach((item) => {
+  sessionCards.forEach((item) => {
     const peso = 1 + Math.min(errosPorInstrumento[item.nome] || 0, 6);
     for (let i = 0; i < peso; i++) pool.push(item);
   });
@@ -440,7 +842,9 @@ function startQuiz() {
   waitingNext = false;
   quizScore = 0;
   quizIndex = 0;
-  quizPerguntas = shuffle(shuffle(getAdaptivePool()).slice(0, instrumentos.length));
+  currentQuizSessionErrorKeys = new Set();
+  sessionAnswerMetrics = [];
+  quizPerguntas = shuffle(shuffle(getAdaptivePool()).slice(0, sessionCards.length));
   renderQuizQuestion();
   renderStats();
 }
@@ -452,11 +856,21 @@ function renderQuizQuestion() {
   }
 
   const item = quizPerguntas[quizIndex];
-  const opcoes = shuffle([item.tempo, ...shuffle(tempos.filter((t) => t !== item.tempo)).slice(0, 3)]);
+  const isNomeQuiz = quizType === "nome";
+  const correta = isNomeQuiz ? item.nome : item.tempo;
+  const universo = isNomeQuiz
+    ? Array.from(new Set(sessionCards.map((card) => card.nome)))
+    : tempos;
+
+  const distratores = shuffle(universo.filter((valor) => valor !== correta)).slice(0, 3);
+  const opcoes = shuffle([correta, ...distratores]);
+  const perguntaTxt = isNomeQuiz
+    ? "Qual o nome deste instrumental?"
+    : "Em qual tempo cirúrgico é usado?";
 
   document.getElementById("card").innerHTML = `
     ${imageHtml(item)}
-    <h2 class="title">Em qual tempo cirúrgico é usado?</h2>
+    <h2 class="title">${perguntaTxt}</h2>
     <div class="options" id="options"></div>
     <div class="feedback" id="feedback"></div>
     <div class="controls"><button class="action-btn hidden" id="nextBtn" type="button" onclick="nextQuizQuestion()">Próxima</button></div>
@@ -509,16 +923,19 @@ function checkQuizAnswer(button, resposta) {
   clearTimer();
 
   const item = quizPerguntas[quizIndex];
-  const correta = item.tempo;
+  const correta = quizType === "nome" ? item.nome : item.tempo;
   const feedbackEl = document.getElementById("feedback");
   lockOptions();
 
   if (resposta === correta) {
     quizScore += 1;
+    recordAnswerMetric(true, false);
     button.classList.add("correct");
     feedbackEl.textContent = "✔ Correto!";
   } else {
     registrarErro(item.nome);
+    currentQuizSessionErrorKeys.add(getCardKey(item));
+    recordAnswerMetric(false, false);
     button.classList.add("wrong");
     feedbackEl.textContent = `✖ Errado! Resposta correta: ${correta}`;
     document.querySelectorAll(".option-btn").forEach((b) => {
@@ -527,6 +944,7 @@ function checkQuizAnswer(button, resposta) {
   }
 
   document.getElementById("nextBtn").classList.remove("hidden");
+  addDailyProgress(1);
   renderStats();
 }
 
@@ -535,8 +953,10 @@ function handleTimeout() {
   waitingNext = true;
 
   const item = quizPerguntas[quizIndex];
-  const correta = item.tempo;
+  const correta = quizType === "nome" ? item.nome : item.tempo;
   registrarErro(item.nome);
+  currentQuizSessionErrorKeys.add(getCardKey(item));
+  recordAnswerMetric(false, true);
 
   lockOptions();
   document.querySelectorAll(".option-btn").forEach((b) => {
@@ -545,6 +965,7 @@ function handleTimeout() {
 
   document.getElementById("feedback").textContent = `⏰ Tempo esgotado! Resposta correta: ${correta}`;
   document.getElementById("nextBtn").classList.remove("hidden");
+  addDailyProgress(1);
   renderStats();
 }
 
@@ -571,6 +992,10 @@ function saveHistoricoFinal() {
   const percentual = total ? Number(((quizScore / total) * 100).toFixed(1)) : 0;
   historicoPontuacoes.push({ data: new Date().toLocaleString("pt-BR"), dificuldade: difficulty, acertos: quizScore, total, percentual });
   if (historicoPontuacoes.length > 12) historicoPontuacoes.shift();
+
+  lastSessionErrorCards.length = 0;
+  currentQuizSessionErrorKeys.forEach((key) => lastSessionErrorCards.push(key));
+
   saveStorage();
 }
 
@@ -581,6 +1006,8 @@ function showQuizFinal() {
 
   const total = quizPerguntas.length;
   const percentual = total ? ((quizScore / total) * 100).toFixed(1) : "0.0";
+  const insights = buildQuizInsights();
+  const insightsHtml = insights.map((line) => `<p class="desc">• ${line}</p>`).join("");
 
   document.getElementById("card").innerHTML = `
     <h2 class="title">Resultado Final</h2>
@@ -589,6 +1016,8 @@ function showQuizFinal() {
     <p class="desc">Dificuldade: ${difficulty}</p>
     <h3 class="title">Instrumento com mais erro</h3>
     <p class="desc">${instrumentoMaisErrado()}</p>
+    <h3 class="title">Análise da sessão</h3>
+    ${insightsHtml}
     <div class="controls">
       <button class="action-btn" type="button" onclick="startQuiz()">Refazer Quiz</button>
       <button class="action-btn" type="button" onclick="setMode('lista')">Ver Lista</button>
@@ -602,14 +1031,22 @@ function showQuizFinal() {
 function renderStats() {
   const ultimo = historicoPontuacoes[historicoPontuacoes.length - 1];
   const historicoTxt = ultimo ? `Último quiz: ${ultimo.acertos}/${ultimo.total} (${ultimo.percentual}%)` : "Último quiz: sem histórico";
+  const totalSessao = sessionCards.length;
+  const metaAtual = getDailyProgress();
+  const metaTotal = dailyStudyData.goal || 30;
+  const streak = getCurrentStreak();
+  const metaConcluida = metaAtual >= metaTotal;
+  const metaBadge = metaConcluida ? "✅" : "🕒";
+  const streakBadge = streak > 0 ? "🔥" : "⭕";
+  document.getElementById("dailyGoalChip").textContent = `🎯 Meta diária: ${metaTotal} cards`;
 
   const atual = mode === "quiz"
-    ? `Quiz: ${quizScore}/${quizPerguntas.length || instrumentos.length}`
+    ? `Quiz: ${quizScore}/${quizPerguntas.length || totalSessao || 0}`
     : mode === "lista"
-      ? `Lista: ${instrumentos.length} instrumentais`
-      : `Flashcards: ${flashIndex + 1}/${instrumentos.length}`;
+      ? `Lista: ${totalSessao} instrumentais`
+      : `Flashcards: ${totalSessao ? flashIndex + 1 : 0}/${totalSessao}`;
 
-  document.getElementById("stats").innerHTML = `<span>${atual}</span><span>${historicoTxt}</span><span>Mais erro: ${instrumentoMaisErrado()}</span>`;
+  document.getElementById("stats").innerHTML = `<span>${atual}</span><span>${historicoTxt}</span><span>${metaBadge} Meta diária: ${metaAtual}/${metaTotal}</span><span>${streakBadge} Streak: ${streak} dia(s)</span>`;
 }
 
 function updateProgress(v) {
@@ -617,7 +1054,7 @@ function updateProgress(v) {
 }
 
 setDifficulty("medio");
-setMode("flashcard");
+renderStats();
 </script>
 </body>
 </html>
