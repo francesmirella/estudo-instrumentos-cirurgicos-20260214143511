@@ -8,8 +8,11 @@
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #0f4c81, #1e88e5);
+  font-family: Tahoma, Arial, sans-serif;
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(255,255,255,0.18), transparent 55%),
+    radial-gradient(900px 400px at 100% 0%, rgba(255,255,255,0.14), transparent 50%),
+    linear-gradient(135deg, #0d3f70, #1d6fd8);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -18,20 +21,33 @@ body {
 }
 .app {
   width: min(980px, 100%);
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
+  background: #ffffff;
+  border-radius: 22px;
+  border: 1px solid #d8e9fb;
+  box-shadow: 0 18px 50px rgba(5, 34, 73, 0.24);
   padding: 24px;
 }
-h1 { margin: 0 0 8px; color: #0f4c81; }
-.subtitle { margin: 0 0 14px; color: #3f6e98; }
+h1 {
+  margin: 0 0 8px;
+  color: #0f4c81;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.subtitle {
+  margin: 0 0 14px;
+  color: #3f6e98;
+  font-weight: 500;
+}
 .toolbar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
 .mode-btn, .difficulty-btn, .action-btn, .option-btn {
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: .2s;
+  transition: .2s ease;
   font-weight: 700;
+}
+.mode-btn, .difficulty-btn, .action-btn, .option-btn, .session-select, .goal-input, .stats, .timer, .config-panel {
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 .session-select {
   background: #e3f2fd;
@@ -59,17 +75,32 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
   color: #fff !important;
 }
 .mode-btn, .difficulty-btn {
-  background: #e3f2fd;
+  background: #eaf4ff;
   color: #0f4c81;
-  padding: 8px 12px;
+  padding: 9px 13px;
+  border: 1px solid #d3e6fb;
 }
 .mode-btn.active, .difficulty-btn.active { background: #0f4c81; color: #fff; }
+.mode-btn:hover, .difficulty-btn:hover, .action-btn:hover, .start-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
 .difficulty-group { display: flex; gap: 6px; flex-wrap: wrap; }
 .primary-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
+}
+.quick-session-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px solid #d9e8f8;
+  border-radius: 10px;
+  background: #f8fcff;
 }
 .config-panel {
   border: 1px solid #d9e8f8;
@@ -80,7 +111,7 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
 .config-panel summary {
   cursor: pointer;
   color: #0f4c81;
-  font-weight: 700;
+  font-weight: 600;
 }
 .config-body {
   margin-top: 10px;
@@ -94,18 +125,28 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
   gap: 8px;
   align-items: center;
 }
-.stats { color: #0f4c81; font-weight: 600; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 12px; }
-.meta-chip {
-  margin: 2px 0 8px;
-  display: inline-flex;
-  align-items: center;
+.config-item {
+  display: flex;
+  flex-direction: column;
   gap: 6px;
-  background: #e9f4ff;
+}
+.config-label {
   color: #0f4c81;
-  border: 1px solid #d2e7fb;
-  border-radius: 999px;
-  padding: 6px 12px;
+  font-size: 0.92rem;
   font-weight: 700;
+}
+#sessionConfigPanel .mode-btn,
+#sessionConfigPanel .difficulty-btn,
+#sessionConfigPanel .session-select,
+#sessionConfigPanel .goal-input {
+  font-weight: 500;
+}
+.stats { color: #0f4c81; font-weight: 600; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+.stats span {
+  background: #eef6ff;
+  border: 1px solid #d5e8fb;
+  border-radius: 999px;
+  padding: 6px 10px;
 }
 .progress-wrap { width: 100%; height: 10px; background: #dbe8f5; border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
 .progress-bar { width: 0%; height: 100%; background: #1e88e5; transition: width .35s ease; }
@@ -113,8 +154,9 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
 .hidden { display: none; }
 .card {
   min-height: 380px;
-  border: 2px solid #e6f0fb;
+  border: 1px solid #d8e9fb;
   border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff, #f9fcff);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -125,9 +167,9 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
 .visual {
   width: 250px;
   height: 185px;
-  border: 1px solid #cfe3f7;
+  border: 1px solid #d4e6f9;
   border-radius: 12px;
-  background: #f2f8ff;
+  background: #f5faff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -141,7 +183,12 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
 .title { margin: 0; color: #0f4c81; }
 .desc { margin: 7px 0 0; color: #3a668f; }
 .controls { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-.action-btn { background: #0f4c81; color: #fff; padding: 9px 14px; }
+.action-btn {
+  background: linear-gradient(180deg, #0f4c81, #0c3f6b);
+  color: #fff;
+  padding: 9px 14px;
+  box-shadow: 0 6px 16px rgba(15, 76, 129, 0.24);
+}
 .options { width: min(460px, 100%); }
 .option-btn {
   width: 100%;
@@ -166,6 +213,11 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
   padding: 10px;
   background: #fbfdff;
   text-align: left;
+  transition: .18s ease;
+}
+.list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 72, 120, 0.12);
 }
 .list-item .front, .list-item .back { font-size: 12px; color: #39648b; font-weight: 700; margin-bottom: 6px; }
 .list-item .mini {
@@ -187,6 +239,29 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
 .list-item .mini img { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
 .list-item h4 { margin: 0 0 4px; color: #0f4c81; font-size: 14px; }
 .list-item p { margin: 0; color: #3a668f; font-size: 12px; }
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+.analysis-box {
+  border: 1px solid #d9e8f8;
+  border-radius: 12px;
+  background: #fbfdff;
+  padding: 12px;
+  text-align: left;
+}
+.analysis-box h4 {
+  margin: 0 0 8px;
+  color: #0f4c81;
+  font-size: 15px;
+}
+.analysis-box p {
+  margin: 0 0 6px;
+  color: #3a668f;
+  font-size: 13px;
+}
 .zoom-overlay {
   position: fixed;
   inset: 0;
@@ -216,10 +291,10 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
   font-weight: 700;
 }
 .welcome-screen {
-  border: 2px solid #e6f0fb;
+  border: 1px solid #d6e8fb;
   border-radius: 16px;
   padding: 26px;
-  background: linear-gradient(180deg, #f8fcff, #eef6ff);
+  background: linear-gradient(180deg, #fafdff, #edf6ff);
   text-align: center;
   margin-bottom: 12px;
 }
@@ -238,13 +313,14 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
   justify-content: center;
 }
 .start-btn {
-  background: #0f4c81;
+  background: linear-gradient(180deg, #0f4c81, #0c3f6b);
   color: #fff;
   padding: 10px 16px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 700;
+  box-shadow: 0 6px 16px rgba(15, 76, 129, 0.24);
 }
 </style>
 </head>
@@ -255,11 +331,12 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
 
   <div id="welcomeScreen" class="welcome-screen">
     <h2 class="welcome-title">Como você quer estudar hoje?</h2>
-    <p class="welcome-text">Selecione um modo para iniciar: flashcards, quiz ou lista completa.</p>
+    <p class="welcome-text">Selecione um modo para iniciar: flashcards, quiz, lista completa ou análise.</p>
     <div class="welcome-actions">
       <button class="start-btn" type="button" onclick="startStudy('flashcard')">Flashcards</button>
       <button class="start-btn" type="button" onclick="startStudy('quiz')">Quiz</button>
       <button class="start-btn" type="button" onclick="startStudy('lista')">Lista</button>
+      <button class="start-btn" type="button" onclick="startStudy('analise')">Análise</button>
     </div>
   </div>
 
@@ -270,53 +347,79 @@ h1 { margin: 0 0 8px; color: #0f4c81; }
       <button id="flashModeBtn" class="mode-btn active" type="button" onclick="setMode('flashcard')">Flashcards</button>
       <button id="quizModeBtn" class="mode-btn" type="button" onclick="setMode('quiz')">Quiz</button>
       <button id="listModeBtn" class="mode-btn" type="button" onclick="setMode('lista')">Lista</button>
+      <button id="analysisModeBtn" class="mode-btn" type="button" onclick="setMode('analise')">Análise</button>
       <button class="mode-btn" type="button" onclick="resetAnalise()">Resetar análise</button>
     </div>
 
-    <details class="config-panel">
+    <div id="quickSessionControls" class="quick-session-row">
+      <span class="config-label">Qtd. de cards</span>
+      <select id="sessionSizeQuick" class="session-select" onchange="setQuickSessionSize()">
+        <option value="10">10 cards</option>
+        <option value="20" selected>20 cards</option>
+        <option value="40">40 cards</option>
+        <option value="60">60 cards</option>
+        <option value="all">Todos</option>
+      </select>
+      <button class="mode-btn" type="button" onclick="shuffleFromQuick()">Sortear sessão</button>
+    </div>
+
+    <details id="sessionConfigPanel" class="config-panel hidden">
       <summary>Configurações da sessão</summary>
       <div class="config-body">
-        <div class="config-row">
-          <select id="groupFilter" class="session-select" onchange="setGroupFilter()">
-            <option value="all" selected>Grupo: Todos</option>
-            <option value="Preensão">Preensão</option>
-            <option value="Hemostasia">Hemostasia</option>
-            <option value="Exposição">Exposição</option>
-            <option value="Especiais">Especiais</option>
-            <option value="Porta-Agulhas">Porta-Agulhas</option>
-          </select>
-          <button id="favoritesBtn" class="mode-btn" type="button" onclick="toggleOnlyFavorites()">Favoritos</button>
-          <button id="lastErrorsBtn" class="mode-btn" type="button" onclick="toggleOnlyLastErrors()">Só erros (última sessão)</button>
+        <div class="config-item">
+          <span class="config-label">Grupo</span>
+          <div class="config-row">
+            <select id="groupFilter" class="session-select" onchange="setGroupFilter()">
+              <option value="all" selected>Todos</option>
+              <option value="Preensão">Preensão</option>
+              <option value="Hemostasia">Hemostasia</option>
+              <option value="Exposição">Exposição</option>
+              <option value="Especiais">Especiais</option>
+              <option value="Porta-Agulhas">Porta-Agulhas</option>
+            </select>
+            <button id="favoritesBtn" class="mode-btn" type="button" onclick="toggleOnlyFavorites()">Favoritos</button>
+            <button id="lastErrorsBtn" class="mode-btn" type="button" onclick="toggleOnlyLastErrors()">Só erros (última sessão)</button>
+          </div>
         </div>
 
-        <div class="config-row">
-          <select id="sessionSize" class="session-select" onchange="applySessionSize(true)">
-            <option value="10">10 cards</option>
-            <option value="20" selected>20 cards</option>
-            <option value="40">40 cards</option>
-            <option value="60">60 cards</option>
-            <option value="all">Todos</option>
-          </select>
-          <span class="goal-label">Meta diária:</span>
-          <input id="dailyGoalInput" class="goal-input" type="number" min="1" step="1" value="30" onchange="updateDailyGoal()" title="Meta diária de cards">
-          <button class="mode-btn" type="button" onclick="applySessionSize(true)">Sortear sessão</button>
+        <div class="config-item">
+          <span class="config-label">Qtd. de cards</span>
+          <div class="config-row">
+            <select id="sessionSize" class="session-select" onchange="syncSessionSizeFromPanel(); applySessionSize(true)">
+              <option value="10">10 cards</option>
+              <option value="20" selected>20 cards</option>
+              <option value="40">40 cards</option>
+              <option value="60">60 cards</option>
+              <option value="all">Todos</option>
+            </select>
+            <button class="mode-btn" type="button" onclick="applySessionSize(true)">Sortear sessão</button>
+          </div>
         </div>
 
-        <div class="config-row difficulty-group" id="difficultyGroup">
-          <select id="quizType" class="session-select" onchange="setQuizType()">
-            <option value="tempo" selected>Quiz: Tempo</option>
-            <option value="nome">Quiz: Nome</option>
-          </select>
-          <button id="facilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('facil')">Fácil</button>
-          <button id="medioBtn" class="difficulty-btn active" type="button" onclick="setDifficulty('medio')">Médio</button>
-          <button id="dificilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('dificil')">Difícil</button>
+        <div class="config-item">
+          <span class="config-label">Dificuldade</span>
+          <div class="config-row difficulty-group" id="difficultyGroup">
+            <select id="quizType" class="session-select" onchange="setQuizType()">
+              <option value="tempo" selected>Quiz: Tempo</option>
+              <option value="nome">Quiz: Nome</option>
+            </select>
+            <button id="facilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('facil')">Fácil</button>
+            <button id="medioBtn" class="difficulty-btn active" type="button" onclick="setDifficulty('medio')">Médio</button>
+            <button id="dificilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('dificil')">Difícil</button>
+          </div>
+        </div>
+
+        <div class="config-item">
+          <span class="config-label">Meta diária</span>
+          <div class="config-row">
+            <input id="dailyGoalInput" class="goal-input" type="number" min="1" step="1" value="30" onchange="updateDailyGoal()" title="Meta diária de cards">
+          </div>
         </div>
       </div>
     </details>
   </div>
 
   <div class="stats" id="stats"></div>
-  <div class="meta-chip" id="dailyGoalChip">🎯 Meta diária: 30 cards</div>
   <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
   <div id="timer" class="timer hidden">Tempo: 15s</div>
   <div id="card" class="card"></div>
@@ -437,6 +540,7 @@ let onlyLastSessionErrors = false;
 let flashSeenInSession = new Set();
 let currentQuizSessionErrorKeys = new Set();
 let sessionAnswerMetrics = [];
+let quizStarted = false;
 
 const favoriteCards = JSON.parse(localStorage.getItem("favoriteCards")) || [];
 const lastSessionErrorCards = JSON.parse(localStorage.getItem("lastSessionErrorCards")) || [];
@@ -492,6 +596,27 @@ function toggleFavorite(item) {
 function setGroupFilter() {
   selectedGroup = document.getElementById("groupFilter").value;
   applySessionSize(true);
+}
+
+function syncSessionSizeFromPanel() {
+  const panelSelect = document.getElementById("sessionSize");
+  const quickSelect = document.getElementById("sessionSizeQuick");
+  if (panelSelect && quickSelect) {
+    quickSelect.value = panelSelect.value;
+  }
+}
+
+function setQuickSessionSize() {
+  const quickSelect = document.getElementById("sessionSizeQuick");
+  const panelSelect = document.getElementById("sessionSize");
+  if (quickSelect && panelSelect) {
+    panelSelect.value = quickSelect.value;
+  }
+  applySessionSize(true);
+}
+
+function shuffleFromQuick() {
+  setQuickSessionSize();
 }
 
 function toggleOnlyFavorites() {
@@ -626,6 +751,7 @@ function buildSessionCards() {
 }
 
 function applySessionSize(refreshView) {
+  syncSessionSizeFromPanel();
   sessionCards = buildSessionCards();
   flashIndex = 0;
   waitingNext = false;
@@ -634,7 +760,9 @@ function applySessionSize(refreshView) {
   if (!refreshView) return;
 
   if (mode === "quiz") {
-    startQuiz();
+    renderQuizStart();
+  } else if (mode === "analise") {
+    renderAnalysisMode();
   } else if (mode === "lista") {
     renderListMode();
   } else {
@@ -687,7 +815,9 @@ function resetAnalise() {
   renderStats();
 
   if (mode === "quiz") {
-    startQuiz();
+    renderQuizStart();
+  } else if (mode === "analise") {
+    renderAnalysisMode();
   } else if (mode === "lista") {
     renderListMode();
   } else {
@@ -703,15 +833,22 @@ function setMode(newMode) {
   mode = newMode;
   clearTimer();
   waitingNext = false;
+  quizStarted = false;
 
   document.getElementById("flashModeBtn").classList.toggle("active", mode === "flashcard");
   document.getElementById("quizModeBtn").classList.toggle("active", mode === "quiz");
   document.getElementById("listModeBtn").classList.toggle("active", mode === "lista");
+  document.getElementById("analysisModeBtn").classList.toggle("active", mode === "analise");
+  document.getElementById("sessionConfigPanel").classList.toggle("hidden", mode !== "quiz");
+  document.getElementById("quickSessionControls").classList.toggle("hidden", mode === "quiz" || mode === "analise");
   document.getElementById("difficultyGroup").classList.toggle("hidden", mode !== "quiz");
 
   if (mode === "quiz") {
-    document.getElementById("timer").classList.remove("hidden");
-    startQuiz();
+    document.getElementById("timer").classList.add("hidden");
+    renderQuizStart();
+  } else if (mode === "analise") {
+    document.getElementById("timer").classList.add("hidden");
+    renderAnalysisMode();
   } else if (mode === "lista") {
     document.getElementById("timer").classList.add("hidden");
     renderListMode();
@@ -728,12 +865,12 @@ function setDifficulty(level) {
   document.getElementById("facilBtn").classList.toggle("active", level === "facil");
   document.getElementById("medioBtn").classList.toggle("active", level === "medio");
   document.getElementById("dificilBtn").classList.toggle("active", level === "dificil");
-  if (mode === "quiz") startQuiz();
+  if (mode === "quiz") renderQuizStart();
 }
 
 function setQuizType() {
   quizType = document.getElementById("quizType").value;
-  if (mode === "quiz") startQuiz();
+  if (mode === "quiz") renderQuizStart();
 }
 
 function nextFlash() {
@@ -824,6 +961,74 @@ function renderListMode() {
   updateProgress(100);
 }
 
+function getTopErrorItems(limit = 5) {
+  return Object.entries(errosPorInstrumento)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit);
+}
+
+function renderAnalysisMode() {
+  const cardEl = document.getElementById("card");
+  const totalQuizzes = historicoPontuacoes.length;
+  const media = totalQuizzes
+    ? (historicoPontuacoes.reduce((sum, item) => sum + item.percentual, 0) / totalQuizzes).toFixed(1)
+    : "0.0";
+
+  const melhor = totalQuizzes
+    ? historicoPontuacoes.reduce((best, item) => item.percentual > best.percentual ? item : best, historicoPontuacoes[0])
+    : null;
+  const pior = totalQuizzes
+    ? historicoPontuacoes.reduce((worst, item) => item.percentual < worst.percentual ? item : worst, historicoPontuacoes[0])
+    : null;
+
+  const ultimos5 = historicoPontuacoes.slice(-5);
+  const tendencia = ultimos5.length >= 2
+    ? (ultimos5[ultimos5.length - 1].percentual >= ultimos5[0].percentual ? "evolução positiva" : "queda recente")
+    : "dados insuficientes";
+
+  const topErros = getTopErrorItems(5);
+  const topErrosHtml = topErros.length
+    ? topErros.map(([nome, erros], idx) => `<p>${idx + 1}. ${nome} — ${erros} erro(s)</p>`).join("")
+    : `<p>Sem erros registrados até agora.</p>`;
+
+  const hoje = getDailyProgress();
+  const meta = dailyStudyData.goal || 30;
+  const progressoMeta = `${hoje}/${meta} (${Math.min(100, ((hoje / meta) * 100 || 0)).toFixed(0)}%)`;
+  const streak = getCurrentStreak();
+
+  cardEl.innerHTML = `
+    <h2 class="title">Aba de Análise</h2>
+    <p class="desc">Visão detalhada do seu desempenho para orientar o estudo.</p>
+    <div class="analysis-grid">
+      <div class="analysis-box">
+        <h4>Desempenho Geral</h4>
+        <p>Quizzes concluídos: ${totalQuizzes}</p>
+        <p>Média de acertos: ${media}%</p>
+        <p>Tendência (últimos 5): ${tendencia}</p>
+      </div>
+      <div class="analysis-box">
+        <h4>Melhor x Pior</h4>
+        <p>Melhor: ${melhor ? `${melhor.percentual}% (${melhor.acertos}/${melhor.total})` : "Sem histórico"}</p>
+        <p>Pior: ${pior ? `${pior.percentual}% (${pior.acertos}/${pior.total})` : "Sem histórico"}</p>
+        <p>Instrumento mais difícil: ${instrumentoMaisErrado()}</p>
+      </div>
+      <div class="analysis-box">
+        <h4>Meta e Consistência</h4>
+        <p>Meta diária atual: ${meta} cards</p>
+        <p>Progresso de hoje: ${progressoMeta}</p>
+        <p>Streak: ${streak} dia(s)</p>
+      </div>
+      <div class="analysis-box">
+        <h4>Top 5 Erros</h4>
+        ${topErrosHtml}
+      </div>
+    </div>
+  `;
+
+  updateProgress(100);
+  renderStats();
+}
+
 function registrarErro(nome) {
   errosPorInstrumento[nome] = (errosPorInstrumento[nome] || 0) + 1;
 }
@@ -837,14 +1042,42 @@ function getAdaptivePool() {
   return pool;
 }
 
+function renderQuizStart() {
+  if (mode !== "quiz") return;
+  clearTimer();
+  quizStarted = false;
+  waitingNext = false;
+  document.getElementById("timer").classList.add("hidden");
+
+  if (!sessionCards.length) {
+    document.getElementById("card").innerHTML = `<p class="desc">Nenhum card disponível para quiz com os filtros atuais.</p>`;
+    updateProgress(0);
+    renderStats();
+    return;
+  }
+
+  document.getElementById("card").innerHTML = `
+    <h2 class="title">Quiz pronto para começar</h2>
+    <p class="desc">Quando estiver focada, clique em iniciar. O tempo só começa após o start.</p>
+    <div class="controls">
+      <button class="action-btn" type="button" onclick="startQuiz()">Start Quiz</button>
+    </div>
+  `;
+
+  updateProgress(0);
+  renderStats();
+}
+
 function startQuiz() {
   clearTimer();
+  quizStarted = true;
   waitingNext = false;
   quizScore = 0;
   quizIndex = 0;
   currentQuizSessionErrorKeys = new Set();
   sessionAnswerMetrics = [];
   quizPerguntas = shuffle(shuffle(getAdaptivePool()).slice(0, sessionCards.length));
+  document.getElementById("timer").classList.remove("hidden");
   renderQuizQuestion();
   renderStats();
 }
@@ -1001,6 +1234,7 @@ function saveHistoricoFinal() {
 
 function showQuizFinal() {
   clearTimer();
+  quizStarted = false;
   saveHistoricoFinal();
   document.getElementById("timer").classList.add("hidden");
 
@@ -1030,23 +1264,20 @@ function showQuizFinal() {
 
 function renderStats() {
   const ultimo = historicoPontuacoes[historicoPontuacoes.length - 1];
-  const historicoTxt = ultimo ? `Último quiz: ${ultimo.acertos}/${ultimo.total} (${ultimo.percentual}%)` : "Último quiz: sem histórico";
+  const historicoTxt = ultimo ? `Último Quiz: ${ultimo.acertos}/${ultimo.total} (${ultimo.percentual}%)` : "Último Quiz: Sem histórico";
   const totalSessao = sessionCards.length;
-  const metaAtual = getDailyProgress();
-  const metaTotal = dailyStudyData.goal || 30;
   const streak = getCurrentStreak();
-  const metaConcluida = metaAtual >= metaTotal;
-  const metaBadge = metaConcluida ? "✅" : "🕒";
   const streakBadge = streak > 0 ? "🔥" : "⭕";
-  document.getElementById("dailyGoalChip").textContent = `🎯 Meta diária: ${metaTotal} cards`;
 
   const atual = mode === "quiz"
     ? `Quiz: ${quizScore}/${quizPerguntas.length || totalSessao || 0}`
+    : mode === "analise"
+      ? "Análise"
     : mode === "lista"
       ? `Lista: ${totalSessao} instrumentais`
       : `Flashcards: ${totalSessao ? flashIndex + 1 : 0}/${totalSessao}`;
 
-  document.getElementById("stats").innerHTML = `<span>${atual}</span><span>${historicoTxt}</span><span>${metaBadge} Meta diária: ${metaAtual}/${metaTotal}</span><span>${streakBadge} Streak: ${streak} dia(s)</span>`;
+  document.getElementById("stats").innerHTML = `<span>${atual}</span><span>${historicoTxt}</span><span>${streakBadge} Streak: ${streak} dia(s)</span>`;
 }
 
 function updateProgress(v) {
