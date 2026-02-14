@@ -6,7 +6,6 @@
 <title>Plataforma de Estudo - Instrumentos Cirúrgicos</title>
 <style>
 * { box-sizing: border-box; }
-
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -17,101 +16,39 @@ body {
   align-items: center;
   padding: 20px;
 }
-
 .app {
-  width: min(860px, 100%);
-  background: #ffffff;
-  border-radius: 22px;
+  width: min(980px, 100%);
+  background: #fff;
+  border-radius: 20px;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
   padding: 24px;
 }
-
-h1 {
-  margin: 0 0 8px;
-  color: #0f4c81;
-  font-size: 26px;
-}
-
-.subtitle {
-  margin: 0 0 18px;
-  color: #35628a;
-  font-size: 14px;
-}
-
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
+h1 { margin: 0 0 8px; color: #0f4c81; }
+.subtitle { margin: 0 0 14px; color: #3f6e98; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .mode-btn, .difficulty-btn, .action-btn, .option-btn {
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.25s;
-  font-weight: 600;
+  transition: .2s;
+  font-weight: 700;
 }
-
-.mode-btn {
-  padding: 8px 14px;
+.mode-btn, .difficulty-btn {
   background: #e3f2fd;
   color: #0f4c81;
+  padding: 8px 12px;
 }
-
-.mode-btn.active, .difficulty-btn.active {
-  background: #0f4c81;
-  color: #fff;
-}
-
-.difficulty-group {
-  display: flex;
-  gap: 6px;
-  margin-left: auto;
-}
-
-.difficulty-btn {
-  padding: 7px 12px;
-  background: #e9f3ff;
-  color: #0f4c81;
-}
-
-.stats {
-  margin-bottom: 14px;
-  color: #0f4c81;
-  font-weight: 600;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.progress-wrap {
-  width: 100%;
-  height: 10px;
-  border-radius: 999px;
-  background: #dce7f4;
-  overflow: hidden;
-  margin-bottom: 14px;
-}
-
-.progress-bar {
-  width: 0%;
-  height: 100%;
-  background: #1e88e5;
-  transition: width 0.35s ease;
-}
-
-.timer {
-  color: #d32f2f;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
+.mode-btn.active, .difficulty-btn.active { background: #0f4c81; color: #fff; }
+.difficulty-group { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+.stats { color: #0f4c81; font-weight: 600; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 12px; }
+.progress-wrap { width: 100%; height: 10px; background: #dbe8f5; border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
+.progress-bar { width: 0%; height: 100%; background: #1e88e5; transition: width .35s ease; }
+.timer { color: #d32f2f; font-weight: 700; margin-bottom: 10px; }
+.hidden { display: none; }
 .card {
-  min-height: 360px;
+  min-height: 380px;
   border: 2px solid #e6f0fb;
-  border-radius: 18px;
+  border-radius: 16px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -119,113 +56,112 @@ h1 {
   justify-content: center;
   text-align: center;
 }
-
 .visual {
-  width: 240px;
-  height: 180px;
-  border-radius: 14px;
-  background: #f3f8ff;
-  border: 1px solid #d5e5f8;
+  width: 250px;
+  height: 185px;
+  border: 1px solid #cfe3f7;
+  border-radius: 12px;
+  background: #f2f8ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
   overflow: hidden;
-  color: #4a6f95;
+  padding: 8px;
+  color: #4c7399;
   font-weight: 700;
-  padding: 10px;
+  margin-bottom: 12px;
 }
-
-.visual img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.title {
-  color: #0f4c81;
-  margin: 0;
-}
-
-.desc {
-  margin-top: 8px;
-  color: #355b81;
-}
-
-.controls {
-  margin-top: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-}
-
-.action-btn {
-  padding: 10px 16px;
-  background: #0f4c81;
-  color: #fff;
-}
-
-.action-btn:hover, .mode-btn:hover, .difficulty-btn:hover {
-  filter: brightness(1.06);
-}
-
-.options {
-  width: min(440px, 100%);
-  margin-top: 8px;
-}
-
+.visual img { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
+.title { margin: 0; color: #0f4c81; }
+.desc { margin: 7px 0 0; color: #3a668f; }
+.controls { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.action-btn { background: #0f4c81; color: #fff; padding: 9px 14px; }
+.options { width: min(460px, 100%); }
 .option-btn {
   width: 100%;
+  margin: 6px 0;
   padding: 10px;
-  margin: 7px 0;
   background: #e3f2fd;
   color: #0f4c81;
-  font-size: 15px;
 }
-
-.option-btn:hover {
-  background: #cfe7ff;
+.option-btn:hover { background: #cde7ff; }
+.correct { background: #43a047 !important; color: #fff !important; }
+.wrong { background: #e53935 !important; color: #fff !important; }
+.feedback { min-height: 24px; margin-top: 8px; font-weight: 700; color: #0f4c81; }
+.list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+  width: 100%;
 }
-
-.correct {
-  background: #43a047 !important;
-  color: #fff !important;
+.list-item {
+  border: 1px solid #d9e8f8;
+  border-radius: 12px;
+  padding: 10px;
+  background: #fbfdff;
+  text-align: left;
 }
-
-.wrong {
-  background: #e53935 !important;
-  color: #fff !important;
+.list-item .front, .list-item .back { font-size: 12px; color: #39648b; font-weight: 700; margin-bottom: 6px; }
+.list-item .mini {
+  width: 100%;
+  height: 120px;
+  border: 1px solid #e1ecf8;
+  border-radius: 10px;
+  background: #f3f8ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 8px;
+  color: #4c7399;
+  font-weight: 700;
+  text-align: center;
+  padding: 6px;
 }
-
-.feedback {
-  min-height: 26px;
+.list-item .mini img { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
+.list-item h4 { margin: 0 0 4px; color: #0f4c81; font-size: 14px; }
+.list-item p { margin: 0; color: #3a668f; font-size: 12px; }
+.zoom-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 9999;
+}
+.zoom-overlay.open { display: flex; }
+.zoom-content {
+  max-width: min(1000px, 95vw);
+  max-height: 90vh;
+  text-align: center;
+}
+.zoom-img {
+  max-width: 100%;
+  max-height: calc(90vh - 40px);
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff;
+}
+.zoom-caption {
+  color: #fff;
   margin-top: 8px;
   font-weight: 700;
-  color: #0f4c81;
-}
-
-.hidden { display: none; }
-
-@media (max-width: 620px) {
-  .difficulty-group {
-    margin-left: 0;
-    width: 100%;
-  }
 }
 </style>
 </head>
 <body>
-
 <div class="app">
   <h1>Instrumentos Cirúrgicos</h1>
-  <p class="subtitle">Identificação visual, associação ao tempo cirúrgico e treino adaptativo.</p>
+  <p class="subtitle">Lista oficial + flashcards + quiz com treino adaptativo.</p>
 
   <div class="toolbar">
     <button id="flashModeBtn" class="mode-btn active" type="button" onclick="setMode('flashcard')">Flashcards</button>
     <button id="quizModeBtn" class="mode-btn" type="button" onclick="setMode('quiz')">Quiz</button>
+    <button id="listModeBtn" class="mode-btn" type="button" onclick="setMode('lista')">Lista</button>
 
-    <div class="difficulty-group">
+    <div class="difficulty-group" id="difficultyGroup">
       <button id="facilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('facil')">Fácil</button>
       <button id="medioBtn" class="difficulty-btn active" type="button" onclick="setDifficulty('medio')">Médio</button>
       <button id="dificilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('dificil')">Difícil</button>
@@ -233,35 +169,106 @@ h1 {
   </div>
 
   <div class="stats" id="stats"></div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div id="timer" class="timer hidden">Tempo: 15s</div>
+  <div id="card" class="card"></div>
+</div>
 
-  <div class="progress-wrap">
-    <div class="progress-bar" id="progressBar"></div>
+<div id="zoomOverlay" class="zoom-overlay" onclick="closeZoom()">
+  <div class="zoom-content" onclick="event.stopPropagation()">
+    <img id="zoomImg" class="zoom-img" alt="Zoom">
+    <div id="zoomCaption" class="zoom-caption"></div>
   </div>
-
-  <div class="timer hidden" id="timer">Tempo: 15s</div>
-
-  <div class="card" id="card"></div>
 </div>
 
 <script>
 const instrumentos = [
-  { nome: "Pinça Kelly", tempo: "Hemostasia", imagem: "imagens/kelly.jpg" },
-  { nome: "Tesoura Metzenbaum", tempo: "Diérese", imagem: "imagens/metzenbaum.jpg" },
-  { nome: "Tesoura Mayo", tempo: "Diérese", imagem: "imagens/mayo.jpg" },
-  { nome: "Pinça Halstead", tempo: "Hemostasia", imagem: "imagens/halstead.jpg" },
-  { nome: "Farabeuf", tempo: "Exposição", imagem: "imagens/farabeuf.jpg" },
-  { nome: "Deaver", tempo: "Exposição", imagem: "imagens/deaver.jpg" },
-  { nome: "Gosset", tempo: "Exposição", imagem: "imagens/gosset.jpg" },
-  { nome: "Porta-agulha Mayo-Hegar", tempo: "Síntese", imagem: "imagens/mayohegar.jpg" },
-  { nome: "Mathieu", tempo: "Síntese", imagem: "imagens/mathieu.jpg" },
-  { nome: "Allis", tempo: "Especial", imagem: "imagens/allis.jpg" },
-  { nome: "Babcock", tempo: "Especial", imagem: "imagens/babcock.jpg" },
-  { nome: "Duval", tempo: "Especial", imagem: "imagens/duval.jpg" },
-  { nome: "Satinsky", tempo: "Especial", imagem: "imagens/satinsky.jpg" },
-  { nome: "Backaus", tempo: "Especial", imagem: "imagens/backaus.jpg" }
+  { nome: "Pinça Adson", tempo: "Preensão", grupo: "Preensão", imagem: "imagens/adson 1.jpg" },
+  { nome: "Pinça Adson", tempo: "Preensão", grupo: "Preensão", imagem: "imagens/adson 2.jpg" },
+  { nome: "Pinça Adson", tempo: "Preensão", grupo: "Preensão", imagem: "imagens/adson 3.jpg" },
+  { nome: "Pinça Anatômica", tempo: "Preensão", grupo: "Preensão", imagem: "imagens/anatomica 1.webp" },
+  { nome: "Pinça Anatômica", tempo: "Preensão", grupo: "Preensão", imagem: "imagens/anatomica 2.webp" },
+  { nome: "Pinça Dente de Rato", tempo: "Preensão", grupo: "Preensão", imagem: "imagens/dente de rato 1.webp" },
+  { nome: "Pinça Dente de Rato", tempo: "Preensão", grupo: "Preensão", imagem: "imagens/dente de rato 2.jpg" },
+
+  { nome: "Pinça Crile", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/crile 1.webp" },
+  { nome: "Pinça Crile", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/crile 2.webp" },
+  { nome: "Pinça Crile", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/crile 3.webp" },
+  { nome: "Pinça Halstead", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/halstead 1.webp" },
+  { nome: "Pinça Halstead", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/halstead 2.webp" },
+  { nome: "Pinça Halstead", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/halstead 3.png" },
+  { nome: "Pinça Kelly", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/kelly 1.webp" },
+  { nome: "Pinça Kelly", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/kelly 2.jpg" },
+  { nome: "Pinça Kelly", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/kelly 3.webp" },
+  { nome: "Pinça Mixter", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/mixter 1.webp" },
+  { nome: "Pinça Mixter", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/mixter 2.webp" },
+  { nome: "Pinça Mixter", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/mixter 3.jpg" },
+
+  { nome: "Farabeuf", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/farabeuf 1.jpg" },
+  { nome: "Farabeuf", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/farabeuf 2.jpg" },
+  { nome: "Farabeuf", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/farabeuf 3.jpg" },
+  { nome: "Válvula Maleável", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/valvula maleavel 1.jfif" },
+  { nome: "Válvula Maleável", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/valvula maleavel 2.webp" },
+  { nome: "Doyen", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/doyen 1.webp" },
+  { nome: "Doyen", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/doyen 2.webp" },
+  { nome: "Doyen", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/doyen 3.webp" },
+  { nome: "Deaver", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/deaver 1.webp" },
+  { nome: "Deaver", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/deaver 2.webp" },
+  { nome: "Deaver", tempo: "Exposição", grupo: "Exposição Dinâmicos", imagem: "imagens/deaver 3.webp" },
+
+  { nome: "Gosset", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/gosset.webp" },
+  { nome: "Gosset", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/gosset 2.webp" },
+  { nome: "Gosset", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/gosset 3.webp" },
+  { nome: "Balfour", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/balfour 1.webp" },
+  { nome: "Balfour", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/balfour 2.webp" },
+  { nome: "Balfour", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/balfour 3.webp" },
+  { nome: "Finochietto", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/finochietto 1.png" },
+  { nome: "Finochietto", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/finochietto 2.webp" },
+  { nome: "Finochietto", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/finochietto 3.webp" },
+  { nome: "Afastador Adson", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/afastador adson 1.webp" },
+  { nome: "Afastador Adson", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/afastador adson 2.jpg" },
+  { nome: "Afastador Adson", tempo: "Exposição", grupo: "Exposição Auto-estáticos", imagem: "imagens/afastador adson 3.webp" },
+
+  { nome: "Allis", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/allis 1.webp" },
+  { nome: "Allis", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/allis 2.png" },
+  { nome: "Allis", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/allis 3.webp" },
+  { nome: "Babcock", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/babcock 1.webp" },
+  { nome: "Babcock", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/babcock 2.webp" },
+  { nome: "Babcock", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/babcock 3.jpg" },
+  { nome: "Backaus", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/backaus 1.jpg" },
+  { nome: "Backaus", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/backaus 2.webp" },
+  { nome: "Backaus", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/backaus 3.webp" },
+  { nome: "Cureta de Siemens", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/cureta de siemens 1.jpg" },
+  { nome: "Cureta de Siemens", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/cureta de siemens 2.jpg" },
+  { nome: "Duval", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/duval 1.webp" },
+  { nome: "Duval", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/duval 2.webp" },
+  { nome: "Duval", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/duval 3.webp" },
+  { nome: "Pinça Kocher", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/kocher 1.jpg" },
+  { nome: "Pinça Kocher", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/kocher 2.webp" },
+  { nome: "Pinça Kocher", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/kocher 3.jpg" },
+  { nome: "Pinça Kocher", tempo: "Hemostasia", grupo: "Hemostáticas", imagem: "imagens/kocher 4.webp" },
+  { nome: "Potts", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/potts 1.jpg" },
+  { nome: "Potts", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/potts 2.webp" },
+  { nome: "Potts", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/potts 3.webp" },
+  { nome: "Saca-Bocado", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/saca bocado 1.webp" },
+  { nome: "Saca-Bocado", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/saca bocado 2.webp" },
+  { nome: "Saca-Bocado", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/saca bocado 3.webp" },
+  { nome: "Satinsky", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/satinsky 1.jpg" },
+  { nome: "Satinsky", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/satinsky 2.jpg" },
+  { nome: "Satinsky", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/satinsky 3.jpg" },
+  { nome: "Satinsky", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/satinsky 4.webp" },
+  { nome: "Collins", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/collins 1.jpg" },
+  { nome: "Collins", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/collin 2.webp" },
+  { nome: "Collins", tempo: "Especiais", grupo: "Especiais", imagem: "imagens/collin 3.webp" },
+
+  { nome: "Porta-Agulha Mayo-Hegar", tempo: "Porta-Agulhas", grupo: "Porta-Agulhas", imagem: "imagens/mayo hegar 1.png" },
+  { nome: "Porta-Agulha Mayo-Hegar", tempo: "Porta-Agulhas", grupo: "Porta-Agulhas", imagem: "imagens/mayo hegar 2.webp" },
+  { nome: "Porta-Agulha Mayo-Hegar", tempo: "Porta-Agulhas", grupo: "Porta-Agulhas", imagem: "imagens/mayo hegar 3.jpg" },
+  { nome: "Porta-Agulha Mathieu", tempo: "Porta-Agulhas", grupo: "Porta-Agulhas", imagem: "imagens/mathieu 1.jpg" },
+  { nome: "Porta-Agulha Mathieu", tempo: "Porta-Agulhas", grupo: "Porta-Agulhas", imagem: "imagens/mathieu 2.webp" }
 ];
 
-const tempos = ["Diérese", "Hemostasia", "Exposição", "Síntese", "Especial"];
+const tempos = ["Preensão", "Hemostasia", "Exposição", "Especiais", "Porta-Agulhas"];
 const difficultyTimes = { facil: 20, medio: 15, dificil: 10 };
 
 let mode = "flashcard";
@@ -292,22 +299,45 @@ function shuffle(array) {
   return copy;
 }
 
-function getImageHTML(item) {
-  return `<div class="visual"><img src="${item.imagem}" alt="${item.nome}" onerror="this.parentElement.textContent='${item.nome}'; this.remove();"></div>`;
+function imageHtml(item, className = "visual") {
+  const safeName = item.nome.replace(/'/g, "\\'");
+  const safeImage = item.imagem.replace(/'/g, "\\'");
+  return `<div class="${className}"><img src="${item.imagem}" alt="${item.nome}" onclick="openZoom('${safeImage}','${safeName}')" onerror="this.parentElement.textContent='${item.nome}'; this.remove();"></div>`;
 }
+
+function openZoom(src, caption) {
+  document.getElementById("zoomImg").src = src;
+  document.getElementById("zoomCaption").textContent = caption;
+  document.getElementById("zoomOverlay").classList.add("open");
+}
+
+function closeZoom() {
+  document.getElementById("zoomOverlay").classList.remove("open");
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeZoom();
+});
 
 function setMode(newMode) {
   mode = newMode;
   clearTimer();
   waitingNext = false;
+
   document.getElementById("flashModeBtn").classList.toggle("active", mode === "flashcard");
   document.getElementById("quizModeBtn").classList.toggle("active", mode === "quiz");
+  document.getElementById("listModeBtn").classList.toggle("active", mode === "lista");
+  document.getElementById("difficultyGroup").classList.toggle("hidden", mode !== "quiz");
 
   if (mode === "quiz") {
+    document.getElementById("timer").classList.remove("hidden");
     startQuiz();
-  } else {
-    renderFlashcard();
+  } else if (mode === "lista") {
     document.getElementById("timer").classList.add("hidden");
+    renderListMode();
+  } else {
+    document.getElementById("timer").classList.add("hidden");
+    renderFlashcard();
   }
 
   renderStats();
@@ -318,10 +348,7 @@ function setDifficulty(level) {
   document.getElementById("facilBtn").classList.toggle("active", level === "facil");
   document.getElementById("medioBtn").classList.toggle("active", level === "medio");
   document.getElementById("dificilBtn").classList.toggle("active", level === "dificil");
-
-  if (mode === "quiz") {
-    startQuiz();
-  }
+  if (mode === "quiz") startQuiz();
 }
 
 function nextFlash() {
@@ -347,9 +374,9 @@ function renderFlashcard() {
 
   if (flashFront === "imagem") {
     cardEl.innerHTML = `
-      ${getImageHTML(item)}
+      ${imageHtml(item)}
       <h2 class="title">Flashcard</h2>
-      <p class="desc">Frente: imagem do instrumento</p>
+      <p class="desc">Frente: imagem</p>
       <div class="controls">
         <button class="action-btn" type="button" onclick="prevFlash()">Anterior</button>
         <button class="action-btn" type="button" onclick="flipFlash()">Virar</button>
@@ -358,9 +385,10 @@ function renderFlashcard() {
     `;
   } else {
     cardEl.innerHTML = `
-      <div class="visual">${item.nome}</div>
+      ${imageHtml(item)}
       <h2 class="title">${item.nome}</h2>
-      <p class="desc">Tempo cirúrgico: ${item.tempo}</p>
+      <p class="desc">Tempo: ${item.tempo}</p>
+      <p class="desc">Grupo: ${item.grupo}</p>
       <div class="controls">
         <button class="action-btn" type="button" onclick="prevFlash()">Anterior</button>
         <button class="action-btn" type="button" onclick="flipFlash()">Voltar</button>
@@ -369,7 +397,29 @@ function renderFlashcard() {
     `;
   }
 
-  updateProgress((flashIndex + 1) / instrumentos.length * 100);
+  updateProgress(((flashIndex + 1) / instrumentos.length) * 100);
+}
+
+function renderListMode() {
+  const cardEl = document.getElementById("card");
+  cardEl.innerHTML = `<div class="list-grid" id="listGrid"></div>`;
+  const grid = document.getElementById("listGrid");
+
+  instrumentos.forEach((item) => {
+    const el = document.createElement("div");
+    el.className = "list-item";
+    el.innerHTML = `
+      <div class="front">Frente</div>
+      ${imageHtml(item, "mini")}
+      <div class="back">Verso</div>
+      <h4>${item.nome}</h4>
+      <p>Tempo: ${item.tempo}</p>
+      <p>Grupo: ${item.grupo}</p>
+    `;
+    grid.appendChild(el);
+  });
+
+  updateProgress(100);
 }
 
 function registrarErro(nome) {
@@ -380,9 +430,7 @@ function getAdaptivePool() {
   const pool = [];
   instrumentos.forEach((item) => {
     const peso = 1 + Math.min(errosPorInstrumento[item.nome] || 0, 6);
-    for (let i = 0; i < peso; i++) {
-      pool.push(item);
-    }
+    for (let i = 0; i < peso; i++) pool.push(item);
   });
   return pool;
 }
@@ -392,11 +440,7 @@ function startQuiz() {
   waitingNext = false;
   quizScore = 0;
   quizIndex = 0;
-
-  const pool = shuffle(getAdaptivePool()).slice(0, instrumentos.length);
-  quizPerguntas = shuffle(pool);
-
-  document.getElementById("timer").classList.remove("hidden");
+  quizPerguntas = shuffle(shuffle(getAdaptivePool()).slice(0, instrumentos.length));
   renderQuizQuestion();
   renderStats();
 }
@@ -409,16 +453,13 @@ function renderQuizQuestion() {
 
   const item = quizPerguntas[quizIndex];
   const opcoes = shuffle([item.tempo, ...shuffle(tempos.filter((t) => t !== item.tempo)).slice(0, 3)]);
-  const cardEl = document.getElementById("card");
 
-  cardEl.innerHTML = `
-    ${getImageHTML(item)}
+  document.getElementById("card").innerHTML = `
+    ${imageHtml(item)}
     <h2 class="title">Em qual tempo cirúrgico é usado?</h2>
     <div class="options" id="options"></div>
     <div class="feedback" id="feedback"></div>
-    <div class="controls">
-      <button class="action-btn hidden" id="nextBtn" type="button" onclick="nextQuizQuestion()">Próxima</button>
-    </div>
+    <div class="controls"><button class="action-btn hidden" id="nextBtn" type="button" onclick="nextQuizQuestion()">Próxima</button></div>
   `;
 
   const optionsDiv = document.getElementById("options");
@@ -441,7 +482,6 @@ function startTimer() {
   tempoRestante = difficultyTimes[difficulty];
   const timerEl = document.getElementById("timer");
   timerEl.textContent = `Tempo: ${tempoRestante}s`;
-
   timerRef = setInterval(() => {
     tempoRestante -= 1;
     timerEl.textContent = `Tempo: ${tempoRestante}s`;
@@ -460,10 +500,7 @@ function clearTimer() {
 }
 
 function lockOptions() {
-  const buttons = document.querySelectorAll(".option-btn");
-  buttons.forEach((b) => {
-    b.disabled = true;
-  });
+  document.querySelectorAll(".option-btn").forEach((b) => b.disabled = true);
 }
 
 function checkQuizAnswer(button, resposta) {
@@ -474,7 +511,6 @@ function checkQuizAnswer(button, resposta) {
   const item = quizPerguntas[quizIndex];
   const correta = item.tempo;
   const feedbackEl = document.getElementById("feedback");
-
   lockOptions();
 
   if (resposta === correta) {
@@ -485,12 +521,8 @@ function checkQuizAnswer(button, resposta) {
     registrarErro(item.nome);
     button.classList.add("wrong");
     feedbackEl.textContent = `✖ Errado! Resposta correta: ${correta}`;
-
-    const buttons = document.querySelectorAll(".option-btn");
-    buttons.forEach((b) => {
-      if (b.textContent === correta) {
-        b.classList.add("correct");
-      }
+    document.querySelectorAll(".option-btn").forEach((b) => {
+      if (b.textContent === correta) b.classList.add("correct");
     });
   }
 
@@ -507,12 +539,8 @@ function handleTimeout() {
   registrarErro(item.nome);
 
   lockOptions();
-
-  const buttons = document.querySelectorAll(".option-btn");
-  buttons.forEach((b) => {
-    if (b.textContent === correta) {
-      b.classList.add("correct");
-    }
+  document.querySelectorAll(".option-btn").forEach((b) => {
+    if (b.textContent === correta) b.classList.add("correct");
   });
 
   document.getElementById("feedback").textContent = `⏰ Tempo esgotado! Resposta correta: ${correta}`;
@@ -529,33 +557,20 @@ function nextQuizQuestion() {
 function instrumentoMaisErrado() {
   let nome = "Nenhum";
   let totalErros = 0;
-
   Object.keys(errosPorInstrumento).forEach((instrumento) => {
     if (errosPorInstrumento[instrumento] > totalErros) {
       nome = instrumento;
       totalErros = errosPorInstrumento[instrumento];
     }
   });
-
   return `${nome} (${totalErros} erros)`;
 }
 
 function saveHistoricoFinal() {
   const total = quizPerguntas.length;
   const percentual = total ? Number(((quizScore / total) * 100).toFixed(1)) : 0;
-
-  historicoPontuacoes.push({
-    data: new Date().toLocaleString("pt-BR"),
-    dificuldade: difficulty,
-    acertos: quizScore,
-    total,
-    percentual
-  });
-
-  if (historicoPontuacoes.length > 12) {
-    historicoPontuacoes.shift();
-  }
-
+  historicoPontuacoes.push({ data: new Date().toLocaleString("pt-BR"), dificuldade: difficulty, acertos: quizScore, total, percentual });
+  if (historicoPontuacoes.length > 12) historicoPontuacoes.shift();
   saveStorage();
 }
 
@@ -566,18 +581,17 @@ function showQuizFinal() {
 
   const total = quizPerguntas.length;
   const percentual = total ? ((quizScore / total) * 100).toFixed(1) : "0.0";
-  const ultima = historicoPontuacoes[historicoPontuacoes.length - 1];
 
   document.getElementById("card").innerHTML = `
     <h2 class="title">Resultado Final</h2>
     <p class="desc">Você acertou ${quizScore} de ${total}</p>
     <p class="desc">Percentual: ${percentual}%</p>
-    <p class="desc">Dificuldade: ${ultima.dificuldade}</p>
-    <h3 class="title">Instrumento que você mais erra</h3>
+    <p class="desc">Dificuldade: ${difficulty}</p>
+    <h3 class="title">Instrumento com mais erro</h3>
     <p class="desc">${instrumentoMaisErrado()}</p>
     <div class="controls">
       <button class="action-btn" type="button" onclick="startQuiz()">Refazer Quiz</button>
-      <button class="action-btn" type="button" onclick="setMode('flashcard')">Ir para Flashcards</button>
+      <button class="action-btn" type="button" onclick="setMode('lista')">Ver Lista</button>
     </div>
   `;
 
@@ -587,23 +601,19 @@ function showQuizFinal() {
 
 function renderStats() {
   const ultimo = historicoPontuacoes[historicoPontuacoes.length - 1];
-  const historicoTxt = ultimo
-    ? `Último quiz: ${ultimo.acertos}/${ultimo.total} (${ultimo.percentual}%)`
-    : "Último quiz: sem histórico";
+  const historicoTxt = ultimo ? `Último quiz: ${ultimo.acertos}/${ultimo.total} (${ultimo.percentual}%)` : "Último quiz: sem histórico";
 
-  const estatisticaAtual = mode === "quiz"
-    ? `Quiz atual: ${quizScore}/${quizPerguntas.length || instrumentos.length}`
-    : `Flashcards: ${flashIndex + 1}/${instrumentos.length}`;
+  const atual = mode === "quiz"
+    ? `Quiz: ${quizScore}/${quizPerguntas.length || instrumentos.length}`
+    : mode === "lista"
+      ? `Lista: ${instrumentos.length} instrumentais`
+      : `Flashcards: ${flashIndex + 1}/${instrumentos.length}`;
 
-  document.getElementById("stats").innerHTML = `
-    <span>${estatisticaAtual}</span>
-    <span>${historicoTxt}</span>
-    <span>Mais erro: ${instrumentoMaisErrado()}</span>
-  `;
+  document.getElementById("stats").innerHTML = `<span>${atual}</span><span>${historicoTxt}</span><span>Mais erro: ${instrumentoMaisErrado()}</span>`;
 }
 
-function updateProgress(value) {
-  document.getElementById("progressBar").style.width = `${Math.max(0, Math.min(100, value)).toFixed(1)}%`;
+function updateProgress(v) {
+  document.getElementById("progressBar").style.width = `${Math.max(0, Math.min(100, v)).toFixed(1)}%`;
 }
 
 setDifficulty("medio");

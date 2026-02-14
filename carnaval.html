@@ -6,7 +6,6 @@
 <title>Quiz Instrumentos Cirúrgicos</title>
 <style>
 * { box-sizing: border-box; }
-
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #0f4c81, #1e88e5);
@@ -17,34 +16,17 @@ body {
   align-items: center;
   padding: 20px;
 }
-
 .container {
   background: white;
-  width: min(620px, 100%);
+  width: min(640px, 100%);
   padding: 24px;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   text-align: center;
 }
-
-h2 {
-  margin: 0 0 8px;
-  color: #0f4c81;
-}
-
-.subtitle {
-  margin: 0 0 14px;
-  color: #406e98;
-}
-
-.difficulty {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
+h2 { margin: 0 0 8px; color: #0f4c81; }
+.subtitle { margin: 0 0 14px; color: #406e98; }
+.difficulty { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .difficulty-btn {
   border: none;
   border-radius: 10px;
@@ -54,12 +36,7 @@ h2 {
   color: #0f4c81;
   font-weight: 700;
 }
-
-.difficulty-btn.active {
-  background: #0f4c81;
-  color: white;
-}
-
+.difficulty-btn.active { background: #0f4c81; color: white; }
 .progress-container {
   width: 100%;
   height: 10px;
@@ -68,33 +45,10 @@ h2 {
   margin-bottom: 14px;
   overflow: hidden;
 }
-
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background: #1e88e5;
-  transition: width 0.4s ease;
-}
-
-.stats {
-  margin-bottom: 8px;
-  color: #0f4c81;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.timer {
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #e53935;
-}
-
-.score {
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #0f4c81;
-}
-
+.progress-bar { height: 100%; width: 0%; background: #1e88e5; transition: width 0.4s ease; }
+.stats { margin-bottom: 8px; color: #0f4c81; font-weight: 600; font-size: 14px; }
+.timer { font-weight: bold; margin-bottom: 10px; color: #e53935; }
+.score { margin-bottom: 10px; font-weight: bold; color: #0f4c81; }
 .visual {
   width: 240px;
   height: 170px;
@@ -109,19 +63,8 @@ h2 {
   font-weight: 700;
   padding: 12px;
 }
-
-.visual img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.question {
-  font-size: 17px;
-  margin-bottom: 15px;
-  color: #0f4c81;
-}
-
+.visual img { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
+.question { font-size: 17px; margin-bottom: 15px; color: #0f4c81; }
 .option {
   display: block;
   width: 100%;
@@ -136,28 +79,10 @@ h2 {
   color: #0f4c81;
   font-weight: 600;
 }
-
-.option:hover {
-  background: #bbdefb;
-}
-
-.correct {
-  background: #4caf50 !important;
-  color: white !important;
-}
-
-.wrong {
-  background: #e53935 !important;
-  color: white !important;
-}
-
-.feedback {
-  margin-top: 10px;
-  font-weight: bold;
-  min-height: 25px;
-  color: #0f4c81;
-}
-
+.option:hover { background: #bbdefb; }
+.correct { background: #4caf50 !important; color: white !important; }
+.wrong { background: #e53935 !important; color: white !important; }
+.feedback { margin-top: 10px; font-weight: bold; min-height: 25px; color: #0f4c81; }
 .next-btn {
   margin-top: 10px;
   padding: 8px 20px;
@@ -169,13 +94,40 @@ h2 {
   display: none;
   font-weight: 700;
 }
+.zoom-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 9999;
+}
+.zoom-overlay.open { display: flex; }
+.zoom-content {
+  max-width: min(1000px, 95vw);
+  max-height: 90vh;
+  text-align: center;
+}
+.zoom-img {
+  max-width: 100%;
+  max-height: calc(90vh - 40px);
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff;
+}
+.zoom-caption {
+  color: #fff;
+  margin-top: 8px;
+  font-weight: 700;
+}
 </style>
 </head>
 <body>
-
 <div class="container" id="container">
   <h2>Quiz - Tempo Cirúrgico</h2>
-  <p class="subtitle">Simulação prática com treino adaptativo por erros.</p>
+  <p class="subtitle">Base oficial de instrumentais.</p>
 
   <div class="difficulty">
     <button id="facilBtn" class="difficulty-btn" type="button" onclick="setDificuldade('facil')">Fácil (20s)</button>
@@ -184,47 +136,113 @@ h2 {
   </div>
 
   <div class="stats" id="stats"></div>
-
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-
+  <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
   <div class="timer" id="timer">Tempo: 15s</div>
   <div class="score" id="score">Pontuação: 0</div>
-
   <div class="visual" id="instrumentVisual"></div>
-
   <div class="question" id="question"></div>
   <div id="options"></div>
   <div class="feedback" id="feedback"></div>
-
   <button class="next-btn" id="nextBtn" type="button" onclick="nextQuestion()">Próxima</button>
+</div>
+
+<div id="zoomOverlay" class="zoom-overlay" onclick="closeZoom()">
+  <div class="zoom-content" onclick="event.stopPropagation()">
+    <img id="zoomImg" class="zoom-img" alt="Zoom">
+    <div id="zoomCaption" class="zoom-caption"></div>
+  </div>
 </div>
 
 <script>
 const instrumentos = [
-  { nome: "Pinça Kelly", tempo: "Hemostasia", imagem: "imagens/kelly.jpg" },
-  { nome: "Tesoura Metzenbaum", tempo: "Diérese", imagem: "imagens/metzenbaum.jpg" },
-  { nome: "Tesoura Mayo", tempo: "Diérese", imagem: "imagens/mayo.jpg" },
-  { nome: "Pinça Halstead", tempo: "Hemostasia", imagem: "imagens/halstead.jpg" },
-  { nome: "Farabeuf", tempo: "Exposição", imagem: "imagens/farabeuf.jpg" },
-  { nome: "Deaver", tempo: "Exposição", imagem: "imagens/deaver.jpg" },
-  { nome: "Gosset", tempo: "Exposição", imagem: "imagens/gosset.jpg" },
-  { nome: "Porta-agulha Mayo-Hegar", tempo: "Síntese", imagem: "imagens/mayohegar.jpg" },
-  { nome: "Mathieu", tempo: "Síntese", imagem: "imagens/mathieu.jpg" },
-  { nome: "Allis", tempo: "Especial", imagem: "imagens/allis.jpg" },
-  { nome: "Babcock", tempo: "Especial", imagem: "imagens/babcock.jpg" },
-  { nome: "Duval", tempo: "Especial", imagem: "imagens/duval.jpg" },
-  { nome: "Satinsky", tempo: "Especial", imagem: "imagens/satinsky.jpg" },
-  { nome: "Backaus", tempo: "Especial", imagem: "imagens/backaus.jpg" }
+  { nome: "Pinça Adson", tempo: "Preensão", imagem: "imagens/adson 1.jpg" },
+  { nome: "Pinça Adson", tempo: "Preensão", imagem: "imagens/adson 2.jpg" },
+  { nome: "Pinça Adson", tempo: "Preensão", imagem: "imagens/adson 3.jpg" },
+  { nome: "Pinça Anatômica", tempo: "Preensão", imagem: "imagens/anatomica 1.webp" },
+  { nome: "Pinça Anatômica", tempo: "Preensão", imagem: "imagens/anatomica 2.webp" },
+  { nome: "Pinça Dente de Rato", tempo: "Preensão", imagem: "imagens/dente de rato 1.webp" },
+  { nome: "Pinça Dente de Rato", tempo: "Preensão", imagem: "imagens/dente de rato 2.jpg" },
+  { nome: "Pinça Crile", tempo: "Hemostasia", imagem: "imagens/crile 1.webp" },
+  { nome: "Pinça Crile", tempo: "Hemostasia", imagem: "imagens/crile 2.webp" },
+  { nome: "Pinça Crile", tempo: "Hemostasia", imagem: "imagens/crile 3.webp" },
+  { nome: "Pinça Halstead", tempo: "Hemostasia", imagem: "imagens/halstead 1.webp" },
+  { nome: "Pinça Halstead", tempo: "Hemostasia", imagem: "imagens/halstead 2.webp" },
+  { nome: "Pinça Halstead", tempo: "Hemostasia", imagem: "imagens/halstead 3.png" },
+  { nome: "Pinça Kelly", tempo: "Hemostasia", imagem: "imagens/kelly 1.webp" },
+  { nome: "Pinça Kelly", tempo: "Hemostasia", imagem: "imagens/kelly 2.jpg" },
+  { nome: "Pinça Kelly", tempo: "Hemostasia", imagem: "imagens/kelly 3.webp" },
+  { nome: "Pinça Mixter", tempo: "Hemostasia", imagem: "imagens/mixter 1.webp" },
+  { nome: "Pinça Mixter", tempo: "Hemostasia", imagem: "imagens/mixter 2.webp" },
+  { nome: "Pinça Mixter", tempo: "Hemostasia", imagem: "imagens/mixter 3.jpg" },
+
+  { nome: "Farabeuf", tempo: "Exposição", imagem: "imagens/farabeuf 1.jpg" },
+  { nome: "Farabeuf", tempo: "Exposição", imagem: "imagens/farabeuf 2.jpg" },
+  { nome: "Farabeuf", tempo: "Exposição", imagem: "imagens/farabeuf 3.jpg" },
+  { nome: "Válvula Maleável", tempo: "Exposição", imagem: "imagens/valvula maleavel 1.jfif" },
+  { nome: "Válvula Maleável", tempo: "Exposição", imagem: "imagens/valvula maleavel 2.webp" },
+  { nome: "Doyen", tempo: "Exposição", imagem: "imagens/doyen 1.webp" },
+  { nome: "Doyen", tempo: "Exposição", imagem: "imagens/doyen 2.webp" },
+  { nome: "Doyen", tempo: "Exposição", imagem: "imagens/doyen 3.webp" },
+  { nome: "Deaver", tempo: "Exposição", imagem: "imagens/deaver 1.webp" },
+  { nome: "Deaver", tempo: "Exposição", imagem: "imagens/deaver 2.webp" },
+  { nome: "Deaver", tempo: "Exposição", imagem: "imagens/deaver 3.webp" },
+  { nome: "Gosset", tempo: "Exposição", imagem: "imagens/gosset.webp" },
+  { nome: "Gosset", tempo: "Exposição", imagem: "imagens/gosset 2.webp" },
+  { nome: "Gosset", tempo: "Exposição", imagem: "imagens/gosset 3.webp" },
+  { nome: "Balfour", tempo: "Exposição", imagem: "imagens/balfour 1.webp" },
+  { nome: "Balfour", tempo: "Exposição", imagem: "imagens/balfour 2.webp" },
+  { nome: "Balfour", tempo: "Exposição", imagem: "imagens/balfour 3.webp" },
+  { nome: "Finochietto", tempo: "Exposição", imagem: "imagens/finochietto 1.png" },
+  { nome: "Finochietto", tempo: "Exposição", imagem: "imagens/finochietto 2.webp" },
+  { nome: "Finochietto", tempo: "Exposição", imagem: "imagens/finochietto 3.webp" },
+  { nome: "Afastador Adson", tempo: "Exposição", imagem: "imagens/afastador adson 1.webp" },
+  { nome: "Afastador Adson", tempo: "Exposição", imagem: "imagens/afastador adson 2.jpg" },
+  { nome: "Afastador Adson", tempo: "Exposição", imagem: "imagens/afastador adson 3.webp" },
+
+  { nome: "Allis", tempo: "Especiais", imagem: "imagens/allis 1.webp" },
+  { nome: "Allis", tempo: "Especiais", imagem: "imagens/allis 2.png" },
+  { nome: "Allis", tempo: "Especiais", imagem: "imagens/allis 3.webp" },
+  { nome: "Babcock", tempo: "Especiais", imagem: "imagens/babcock 1.webp" },
+  { nome: "Babcock", tempo: "Especiais", imagem: "imagens/babcock 2.webp" },
+  { nome: "Babcock", tempo: "Especiais", imagem: "imagens/babcock 3.jpg" },
+  { nome: "Backaus", tempo: "Especiais", imagem: "imagens/backaus 1.jpg" },
+  { nome: "Backaus", tempo: "Especiais", imagem: "imagens/backaus 2.webp" },
+  { nome: "Backaus", tempo: "Especiais", imagem: "imagens/backaus 3.webp" },
+  { nome: "Cureta de Siemens", tempo: "Especiais", imagem: "imagens/cureta de siemens 1.jpg" },
+  { nome: "Cureta de Siemens", tempo: "Especiais", imagem: "imagens/cureta de siemens 2.jpg" },
+  { nome: "Duval", tempo: "Especiais", imagem: "imagens/duval 1.webp" },
+  { nome: "Duval", tempo: "Especiais", imagem: "imagens/duval 2.webp" },
+  { nome: "Duval", tempo: "Especiais", imagem: "imagens/duval 3.webp" },
+  { nome: "Pinça Kocher", tempo: "Hemostasia", imagem: "imagens/kocher 1.jpg" },
+  { nome: "Pinça Kocher", tempo: "Hemostasia", imagem: "imagens/kocher 2.webp" },
+  { nome: "Pinça Kocher", tempo: "Hemostasia", imagem: "imagens/kocher 3.jpg" },
+  { nome: "Pinça Kocher", tempo: "Hemostasia", imagem: "imagens/kocher 4.webp" },
+  { nome: "Potts", tempo: "Especiais", imagem: "imagens/potts 1.jpg" },
+  { nome: "Potts", tempo: "Especiais", imagem: "imagens/potts 2.webp" },
+  { nome: "Potts", tempo: "Especiais", imagem: "imagens/potts 3.webp" },
+  { nome: "Saca-Bocado", tempo: "Especiais", imagem: "imagens/saca bocado 1.webp" },
+  { nome: "Saca-Bocado", tempo: "Especiais", imagem: "imagens/saca bocado 2.webp" },
+  { nome: "Saca-Bocado", tempo: "Especiais", imagem: "imagens/saca bocado 3.webp" },
+  { nome: "Satinsky", tempo: "Especiais", imagem: "imagens/satinsky 1.jpg" },
+  { nome: "Satinsky", tempo: "Especiais", imagem: "imagens/satinsky 2.jpg" },
+  { nome: "Satinsky", tempo: "Especiais", imagem: "imagens/satinsky 3.jpg" },
+  { nome: "Satinsky", tempo: "Especiais", imagem: "imagens/satinsky 4.webp" },
+  { nome: "Collins", tempo: "Especiais", imagem: "imagens/collins 1.jpg" },
+  { nome: "Collins", tempo: "Especiais", imagem: "imagens/collin 2.webp" },
+  { nome: "Collins", tempo: "Especiais", imagem: "imagens/collin 3.webp" },
+
+  { nome: "Porta-Agulha Mayo-Hegar", tempo: "Porta-Agulhas", imagem: "imagens/mayo hegar 1.png" },
+  { nome: "Porta-Agulha Mayo-Hegar", tempo: "Porta-Agulhas", imagem: "imagens/mayo hegar 2.webp" },
+  { nome: "Porta-Agulha Mayo-Hegar", tempo: "Porta-Agulhas", imagem: "imagens/mayo hegar 3.jpg" },
+  { nome: "Porta-Agulha Mathieu", tempo: "Porta-Agulhas", imagem: "imagens/mathieu 1.jpg" },
+  { nome: "Porta-Agulha Mathieu", tempo: "Porta-Agulhas", imagem: "imagens/mathieu 2.webp" }
 ];
 
-const tempos = ["Diérese", "Hemostasia", "Exposição", "Síntese", "Especial"];
+const tempos = ["Preensão", "Hemostasia", "Exposição", "Especiais", "Porta-Agulhas"];
 const temposDificuldade = { facil: 20, medio: 15, dificil: 10 };
 
 let dificuldade = "medio";
 let tempoPorPergunta = temposDificuldade[dificuldade];
-
 let currentQuestion = 0;
 let score = 0;
 let perguntas = [];
@@ -252,23 +270,18 @@ function shuffle(array) {
 function instrumentoMaisErrado() {
   let nome = "Nenhum";
   let total = 0;
-
   Object.keys(errosPorInstrumento).forEach((instrumento) => {
     if (errosPorInstrumento[instrumento] > total) {
       total = errosPorInstrumento[instrumento];
       nome = instrumento;
     }
   });
-
   return `${nome} (${total} erros)`;
 }
 
 function updateStats() {
   const ultima = historicoPontuacoes[historicoPontuacoes.length - 1];
-  const ultimoTxt = ultima
-    ? `Último quiz: ${ultima.acertos}/${ultima.total} (${ultima.percentual}%)`
-    : "Último quiz: sem histórico";
-
+  const ultimoTxt = ultima ? `Último quiz: ${ultima.acertos}/${ultima.total} (${ultima.percentual}%)` : "Último quiz: sem histórico";
   document.getElementById("stats").textContent = `${ultimoTxt} | Mais erro: ${instrumentoMaisErrado()}`;
 }
 
@@ -281,9 +294,7 @@ function getAdaptivePool() {
   const pool = [];
   instrumentos.forEach((item) => {
     const peso = 1 + Math.min(errosPorInstrumento[item.nome] || 0, 6);
-    for (let i = 0; i < peso; i++) {
-      pool.push(item);
-    }
+    for (let i = 0; i < peso; i++) pool.push(item);
   });
   return pool;
 }
@@ -295,8 +306,24 @@ function updateProgress() {
 
 function setVisual(item) {
   const visual = document.getElementById("instrumentVisual");
-  visual.innerHTML = `<img src="${item.imagem}" alt="${item.nome}" onerror="this.parentElement.textContent='${item.nome}'; this.remove();">`;
+  const safeName = item.nome.replace(/'/g, "\\'");
+  const safeImage = item.imagem.replace(/'/g, "\\'");
+  visual.innerHTML = `<img src="${item.imagem}" alt="${item.nome}" onclick="openZoom('${safeImage}','${safeName}')" onerror="this.parentElement.textContent='${item.nome}'; this.remove();">`;
 }
+
+function openZoom(src, caption) {
+  document.getElementById("zoomImg").src = src;
+  document.getElementById("zoomCaption").textContent = caption;
+  document.getElementById("zoomOverlay").classList.add("open");
+}
+
+function closeZoom() {
+  document.getElementById("zoomOverlay").classList.remove("open");
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeZoom();
+});
 
 function clearTimer() {
   if (intervalo) {
@@ -313,7 +340,6 @@ function startTimer() {
   intervalo = setInterval(() => {
     tempoRestante -= 1;
     document.getElementById("timer").textContent = `Tempo: ${tempoRestante}s`;
-
     if (tempoRestante <= 0) {
       clearTimer();
       handleTimeout();
@@ -323,19 +349,11 @@ function startTimer() {
 
 function bloquearRespostas() {
   clearTimer();
-  const allButtons = document.querySelectorAll(".option");
-  allButtons.forEach((btn) => {
-    btn.disabled = true;
-  });
+  document.querySelectorAll(".option").forEach((btn) => { btn.disabled = true; });
 }
 
-function showNextButton() {
-  document.getElementById("nextBtn").style.display = "inline-block";
-}
-
-function hideNextButton() {
-  document.getElementById("nextBtn").style.display = "none";
-}
+function showNextButton() { document.getElementById("nextBtn").style.display = "inline-block"; }
+function hideNextButton() { document.getElementById("nextBtn").style.display = "none"; }
 
 function handleTimeout() {
   if (aguardandoProxima) return;
@@ -345,11 +363,8 @@ function handleTimeout() {
   registrarErro(item.nome);
   bloquearRespostas();
 
-  const allButtons = document.querySelectorAll(".option");
-  allButtons.forEach((btn) => {
-    if (btn.innerText === item.tempo) {
-      btn.classList.add("correct");
-    }
+  document.querySelectorAll(".option").forEach((btn) => {
+    if (btn.innerText === item.tempo) btn.classList.add("correct");
   });
 
   document.getElementById("feedback").innerText = `⏰ Tempo esgotado! Resposta correta: ${item.tempo}`;
@@ -366,7 +381,6 @@ function loadQuestion() {
   aguardandoProxima = false;
   const questionData = perguntas[currentQuestion];
   setVisual(questionData);
-
   document.getElementById("question").innerText = "Em qual tempo cirúrgico é usado este instrumento?";
 
   const optionsDiv = document.getElementById("options");
@@ -375,17 +389,12 @@ function loadQuestion() {
   hideNextButton();
 
   let alternativas = [questionData.tempo];
-
   while (alternativas.length < 4) {
     const tempoAleatorio = tempos[Math.floor(Math.random() * tempos.length)];
-    if (!alternativas.includes(tempoAleatorio)) {
-      alternativas.push(tempoAleatorio);
-    }
+    if (!alternativas.includes(tempoAleatorio)) alternativas.push(tempoAleatorio);
   }
 
-  alternativas = shuffle(alternativas);
-
-  alternativas.forEach((opcao) => {
+  shuffle(alternativas).forEach((opcao) => {
     const button = document.createElement("button");
     button.innerText = opcao;
     button.classList.add("option");
@@ -401,12 +410,10 @@ function loadQuestion() {
 function checkAnswer(button, resposta) {
   if (aguardandoProxima) return;
   aguardandoProxima = true;
-
   bloquearRespostas();
 
   const correta = perguntas[currentQuestion].tempo;
   const nomeInstrumento = perguntas[currentQuestion].nome;
-  const allButtons = document.querySelectorAll(".option");
 
   if (resposta === correta) {
     button.classList.add("correct");
@@ -416,12 +423,7 @@ function checkAnswer(button, resposta) {
     registrarErro(nomeInstrumento);
     button.classList.add("wrong");
     document.getElementById("feedback").innerText = `✖ Errado! Resposta correta: ${correta}`;
-
-    allButtons.forEach((btn) => {
-      if (btn.innerText === correta) {
-        btn.classList.add("correct");
-      }
-    });
+    document.querySelectorAll(".option").forEach((btn) => { if (btn.innerText === correta) btn.classList.add("correct"); });
   }
 
   document.getElementById("score").innerText = `Pontuação: ${score}`;
@@ -431,30 +433,16 @@ function checkAnswer(button, resposta) {
 
 function nextQuestion() {
   currentQuestion += 1;
-
-  if (currentQuestion < perguntas.length) {
-    loadQuestion();
-  } else {
-    showFinal();
-  }
+  if (currentQuestion < perguntas.length) loadQuestion();
+  else showFinal();
 }
 
 function saveHistoricoFinal() {
   const total = perguntas.length;
   const percentual = total ? Number(((score / total) * 100).toFixed(1)) : 0;
 
-  historicoPontuacoes.push({
-    data: new Date().toLocaleString("pt-BR"),
-    dificuldade,
-    acertos: score,
-    total,
-    percentual
-  });
-
-  if (historicoPontuacoes.length > 12) {
-    historicoPontuacoes.shift();
-  }
-
+  historicoPontuacoes.push({ data: new Date().toLocaleString("pt-BR"), dificuldade, acertos: score, total, percentual });
+  if (historicoPontuacoes.length > 12) historicoPontuacoes.shift();
   saveStorage();
 }
 
@@ -482,9 +470,7 @@ function startQuiz() {
   currentQuestion = 0;
   score = 0;
   aguardandoProxima = false;
-
-  const pool = shuffle(getAdaptivePool()).slice(0, instrumentos.length);
-  perguntas = shuffle(pool);
+  perguntas = shuffle(shuffle(getAdaptivePool()).slice(0, instrumentos.length));
 
   document.getElementById("score").innerText = "Pontuação: 0";
   document.getElementById("progressBar").style.width = "0%";
@@ -506,6 +492,5 @@ function setDificuldade(nivel) {
 updateStats();
 startQuiz();
 </script>
-
 </body>
 </html>
