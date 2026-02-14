@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Quiz Instrumentos Cirúrgicos</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f4c81, #1e88e5);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: white;
+  width: 520px;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 10px;
+  color: #0f4c81;
+}
+
+img {
+  width: 200px;
+  height: 150px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+.progress-container {
+  width: 100%;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #1e88e5;
+  transition: width 0.4s ease;
+}
+
+.timer {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #e53935;
+}
+
+.score {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.question {
+  font-size: 17px;
+  margin-bottom: 15px;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: none;
+  background: #e3f2fd;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 15px;
+}
+
+.option:hover {
+  background: #bbdefb;
+}
+
+.correct {
+  background: #4caf50 !important;
+  color: white;
+}
+
+.wrong {
+  background: #e53935 !important;
+  color: white;
+}
+
+.feedback {
+  margin-top: 10px;
+  font-weight: bold;
+  height: 25px;
+}
+
+.next-btn {
+  margin-top: 10px;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #0f4c81;
+  color: white;
+  cursor: pointer;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Quiz - Tempo Cirúrgico</h2>
+
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="timer" id="timer">Tempo: 15s</div>
+  <div class="score" id="score">Pontuação: 0</div>
+
+  <img id="instrumentImage" src="" alt="Instrumento">
+
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+  <div class="feedback" id="feedback"></div>
+
+  <button class="next-btn" onclick="nextQuestion()">Próxima</button>
+</div>
+
+
+<script>
+
+const dificuldade = prompt("Escolha dificuldade: facil, medio ou dificil").toLowerCase();
+
+let tempoPorPergunta = 15;
+
+if (dificuldade === "facil") tempoPorPergunta = 20;
+if (dificuldade === "medio") tempoPorPergunta = 15;
+if (dificuldade === "dificil") tempoPorPergunta = 10;
+
+const instrumentos = [
+  { nome: "Pinça Kelly", tempo: "Hemostasia", imagem: "imagens/kelly.jpg" },
+  { nome: "Tesoura Metzenbaum", tempo: "Diérese", imagem: "imagens/metzenbaum.jpg" },
+  { nome: "Tesoura Mayo", tempo: "Diérese", imagem: "imagens/mayo.jpg" },
+  { nome: "Pinça Halstead", tempo: "Hemostasia", imagem: "imagens/halstead.jpg" },
+  { nome: "Farabeuf", tempo: "Exposição", imagem: "imagens/farabeuf.jpg" },
+  { nome: "Deaver", tempo: "Exposição", imagem: "imagens/deaver.jpg" },
+  { nome: "Gosset", tempo: "Exposição", imagem: "imagens/gosset.jpg" },
+  { nome: "Porta-agulha Mayo-Hegar", tempo: "Síntese", imagem: "imagens/mayohegar.jpg" },
+  { nome: "Mathieu", tempo: "Síntese", imagem: "imagens/mathieu.jpg" },
+  { nome: "Allis", tempo: "Especial", imagem: "imagens/allis.jpg" },
+  { nome: "Babcock", tempo: "Especial", imagem: "imagens/babcock.jpg" },
+  { nome: "Duval", tempo: "Especial", imagem: "imagens/duval.jpg" },
+  { nome: "Satinsky", tempo: "Especial", imagem: "imagens/satinsky.jpg" },
+  { nome: "Backaus", tempo: "Especial", imagem: "imagens/backaus.jpg" }
+];
+
+const tempos = ["Diérese", "Hemostasia", "Exposição", "Síntese", "Especial"];
+
+let currentQuestion = 0;
+let score = 0;
+let perguntas = shuffle([...instrumentos]);
+
+let tempoRestante = tempoPorPergunta;
+let intervalo;
+
+let errosPorInstrumento = JSON.parse(localStorage.getItem("errosInstrumentos")) || {};
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function startTimer() {
+  tempoRestante = tempoPorPergunta;
+  document.getElementById("timer").innerText = `Tempo: ${tempoRestante}s`;
+
+  intervalo = setInterval(() => {
+    tempoRestante--;
+    document.getElementById("timer").innerText = `Tempo: ${tempoRestante}s`;
+
+    if (tempoRestante <= 0) {
+      clearInterval(intervalo);
+      registrarErro(perguntas[currentQuestion].nome);
+      bloquearRespostas();
+      document.getElementById("feedback").innerText =
+        `⏰ Tempo esgotado! Resposta: ${perguntas[currentQuestion].tempo}`;
+      document.querySelector(".next-btn").style.display = "inline-block";
+    }
+  }, 1000);
+}
+
+function loadQuestion() {
+  const questionData = perguntas[currentQuestion];
+
+  document.getElementById("instrumentImage").src = questionData.imagem;
+  document.getElementById("question").innerText =
+    `Em qual tempo cirúrgico é usado este instrumento?`;
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+  document.getElementById("feedback").innerText = "";
+  document.querySelector(".next-btn").style.display = "none";
+
+  let alternativas = [questionData.tempo];
+
+  while (alternativas.length < 4) {
+    let tempoAleatorio = tempos[Math.floor(Math.random() * tempos.length)];
+    if (!alternativas.includes(tempoAleatorio)) {
+      alternativas.push(tempoAleatorio);
+    }
+  }
+
+  alternativas = shuffle(alternativas);
+
+  alternativas.forEach(opcao => {
+    const button = document.createElement("button");
+    button.innerText = opcao;
+    button.classList.add("option");
+    button.onclick = () => checkAnswer(button, opcao);
+    optionsDiv.appendChild(button);
+  });
+
+  updateProgress();
+  startTimer();
+}
+
+function registrarErro(nome) {
+  if (!errosPorInstrumento[nome]) {
+    errosPorInstrumento[nome] = 0;
+  }
+  errosPorInstrumento[nome]++;
+  localStorage.setItem("errosInstrumentos", JSON.stringify(errosPorInstrumento));
+}
+
+function bloquearRespostas() {
+  clearInterval(intervalo);
+  const allButtons = document.querySelectorAll(".option");
+  allButtons.forEach(btn => btn.disabled = true);
+}
+
+function checkAnswer(button, resposta) {
+  bloquearRespostas();
+
+  const correta = perguntas[currentQuestion].tempo;
+  const nomeInstrumento = perguntas[currentQuestion].nome;
+  const allButtons = document.querySelectorAll(".option");
+
+  if (resposta === correta) {
+    button.classList.add("correct");
+    score++;
+    document.getElementById("feedback").innerText = "✔ Correto!";
+  } else {
+    registrarErro(nomeInstrumento);
+    button.classList.add("wrong");
+    document.getElementById("feedback").innerText =
+      `✖ Errado! Resposta correta: ${correta}`;
+
+    allButtons.forEach(btn => {
+      if (btn.innerText === correta) {
+        btn.classList.add("correct");
+      }
+    });
+  }
+
+  document.getElementById("score").innerText = `Pontuação: ${score}`;
+  document.querySelector(".next-btn").style.display = "inline-block";
+}
+
+function nextQuestion() {
+  currentQuestion++;
+
+  if (currentQuestion < perguntas.length) {
+    loadQuestion();
+  } else {
+    showFinal();
+  }
+}
+
+function updateProgress() {
+  const progress = ((currentQuestion) / perguntas.length) * 100;
+  document.getElementById("progressBar").style.width = progress + "%";
+}
+
+function instrumentoMaisErrado() {
+  let maxErro = 0;
+  let instrumento = "Nenhum";
+
+  for (let nome in errosPorInstrumento) {
+    if (errosPorInstrumento[nome] > maxErro) {
+      maxErro = errosPorInstrumento[nome];
+      instrumento = nome;
+    }
+  }
+
+  return `${instrumento} (${maxErro} erros)`;
+}
+
+function showFinal() {
+  document.querySelector(".container").innerHTML = `
+    <h2>Resultado Final</h2>
+    <p>Você acertou ${score} de ${perguntas.length}</p>
+    <p>Percentual: ${(score/perguntas.length*100).toFixed(1)}%</p>
+    <h3>Instrumento que você mais erra:</h3>
+    <p>${instrumentoMaisErrado()}</p>
+    <button onclick="location.reload()" class="next-btn" style="display:inline-block">
+      Refazer Quiz
+    </button>
+  `;
+}
+
+loadQuestion();
+
+</script>
+
+
+
+
+</body>
+</html>

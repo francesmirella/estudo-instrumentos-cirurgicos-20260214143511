@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plataforma de Estudo - Instrumentos Cirúrgicos</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f4c81, #1e88e5);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.app {
+  width: min(860px, 100%);
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
+  padding: 24px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  color: #0f4c81;
+  font-size: 26px;
+}
+
+.subtitle {
+  margin: 0 0 18px;
+  color: #35628a;
+  font-size: 14px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.mode-btn, .difficulty-btn, .action-btn, .option-btn {
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.25s;
+  font-weight: 600;
+}
+
+.mode-btn {
+  padding: 8px 14px;
+  background: #e3f2fd;
+  color: #0f4c81;
+}
+
+.mode-btn.active, .difficulty-btn.active {
+  background: #0f4c81;
+  color: #fff;
+}
+
+.difficulty-group {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.difficulty-btn {
+  padding: 7px 12px;
+  background: #e9f3ff;
+  color: #0f4c81;
+}
+
+.stats {
+  margin-bottom: 14px;
+  color: #0f4c81;
+  font-weight: 600;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.progress-wrap {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: #dce7f4;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #1e88e5;
+  transition: width 0.35s ease;
+}
+
+.timer {
+  color: #d32f2f;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.card {
+  min-height: 360px;
+  border: 2px solid #e6f0fb;
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.visual {
+  width: 240px;
+  height: 180px;
+  border-radius: 14px;
+  background: #f3f8ff;
+  border: 1px solid #d5e5f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  overflow: hidden;
+  color: #4a6f95;
+  font-weight: 700;
+  padding: 10px;
+}
+
+.visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.title {
+  color: #0f4c81;
+  margin: 0;
+}
+
+.desc {
+  margin-top: 8px;
+  color: #355b81;
+}
+
+.controls {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.action-btn {
+  padding: 10px 16px;
+  background: #0f4c81;
+  color: #fff;
+}
+
+.action-btn:hover, .mode-btn:hover, .difficulty-btn:hover {
+  filter: brightness(1.06);
+}
+
+.options {
+  width: min(440px, 100%);
+  margin-top: 8px;
+}
+
+.option-btn {
+  width: 100%;
+  padding: 10px;
+  margin: 7px 0;
+  background: #e3f2fd;
+  color: #0f4c81;
+  font-size: 15px;
+}
+
+.option-btn:hover {
+  background: #cfe7ff;
+}
+
+.correct {
+  background: #43a047 !important;
+  color: #fff !important;
+}
+
+.wrong {
+  background: #e53935 !important;
+  color: #fff !important;
+}
+
+.feedback {
+  min-height: 26px;
+  margin-top: 8px;
+  font-weight: 700;
+  color: #0f4c81;
+}
+
+.hidden { display: none; }
+
+@media (max-width: 620px) {
+  .difficulty-group {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <h1>Instrumentos Cirúrgicos</h1>
+  <p class="subtitle">Identificação visual, associação ao tempo cirúrgico e treino adaptativo.</p>
+
+  <div class="toolbar">
+    <button id="flashModeBtn" class="mode-btn active" type="button" onclick="setMode('flashcard')">Flashcards</button>
+    <button id="quizModeBtn" class="mode-btn" type="button" onclick="setMode('quiz')">Quiz</button>
+
+    <div class="difficulty-group">
+      <button id="facilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('facil')">Fácil</button>
+      <button id="medioBtn" class="difficulty-btn active" type="button" onclick="setDifficulty('medio')">Médio</button>
+      <button id="dificilBtn" class="difficulty-btn" type="button" onclick="setDifficulty('dificil')">Difícil</button>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="timer hidden" id="timer">Tempo: 15s</div>
+
+  <div class="card" id="card"></div>
+</div>
+
+<script>
+const instrumentos = [
+  { nome: "Pinça Kelly", tempo: "Hemostasia", imagem: "imagens/kelly.jpg" },
+  { nome: "Tesoura Metzenbaum", tempo: "Diérese", imagem: "imagens/metzenbaum.jpg" },
+  { nome: "Tesoura Mayo", tempo: "Diérese", imagem: "imagens/mayo.jpg" },
+  { nome: "Pinça Halstead", tempo: "Hemostasia", imagem: "imagens/halstead.jpg" },
+  { nome: "Farabeuf", tempo: "Exposição", imagem: "imagens/farabeuf.jpg" },
+  { nome: "Deaver", tempo: "Exposição", imagem: "imagens/deaver.jpg" },
+  { nome: "Gosset", tempo: "Exposição", imagem: "imagens/gosset.jpg" },
+  { nome: "Porta-agulha Mayo-Hegar", tempo: "Síntese", imagem: "imagens/mayohegar.jpg" },
+  { nome: "Mathieu", tempo: "Síntese", imagem: "imagens/mathieu.jpg" },
+  { nome: "Allis", tempo: "Especial", imagem: "imagens/allis.jpg" },
+  { nome: "Babcock", tempo: "Especial", imagem: "imagens/babcock.jpg" },
+  { nome: "Duval", tempo: "Especial", imagem: "imagens/duval.jpg" },
+  { nome: "Satinsky", tempo: "Especial", imagem: "imagens/satinsky.jpg" },
+  { nome: "Backaus", tempo: "Especial", imagem: "imagens/backaus.jpg" }
+];
+
+const tempos = ["Diérese", "Hemostasia", "Exposição", "Síntese", "Especial"];
+const difficultyTimes = { facil: 20, medio: 15, dificil: 10 };
+
+let mode = "flashcard";
+let difficulty = "medio";
+let flashIndex = 0;
+let flashFront = "imagem";
+let quizPerguntas = [];
+let quizIndex = 0;
+let quizScore = 0;
+let tempoRestante = difficultyTimes[difficulty];
+let timerRef = null;
+let waitingNext = false;
+
+const errosPorInstrumento = JSON.parse(localStorage.getItem("errosInstrumentos")) || {};
+const historicoPontuacoes = JSON.parse(localStorage.getItem("historicoPontuacoes")) || [];
+
+function saveStorage() {
+  localStorage.setItem("errosInstrumentos", JSON.stringify(errosPorInstrumento));
+  localStorage.setItem("historicoPontuacoes", JSON.stringify(historicoPontuacoes));
+}
+
+function shuffle(array) {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function getImageHTML(item) {
+  return `<div class="visual"><img src="${item.imagem}" alt="${item.nome}" onerror="this.parentElement.textContent='${item.nome}'; this.remove();"></div>`;
+}
+
+function setMode(newMode) {
+  mode = newMode;
+  clearTimer();
+  waitingNext = false;
+  document.getElementById("flashModeBtn").classList.toggle("active", mode === "flashcard");
+  document.getElementById("quizModeBtn").classList.toggle("active", mode === "quiz");
+
+  if (mode === "quiz") {
+    startQuiz();
+  } else {
+    renderFlashcard();
+    document.getElementById("timer").classList.add("hidden");
+  }
+
+  renderStats();
+}
+
+function setDifficulty(level) {
+  difficulty = level;
+  document.getElementById("facilBtn").classList.toggle("active", level === "facil");
+  document.getElementById("medioBtn").classList.toggle("active", level === "medio");
+  document.getElementById("dificilBtn").classList.toggle("active", level === "dificil");
+
+  if (mode === "quiz") {
+    startQuiz();
+  }
+}
+
+function nextFlash() {
+  flashIndex = (flashIndex + 1) % instrumentos.length;
+  flashFront = "imagem";
+  renderFlashcard();
+}
+
+function prevFlash() {
+  flashIndex = (flashIndex - 1 + instrumentos.length) % instrumentos.length;
+  flashFront = "imagem";
+  renderFlashcard();
+}
+
+function flipFlash() {
+  flashFront = flashFront === "imagem" ? "verso" : "imagem";
+  renderFlashcard();
+}
+
+function renderFlashcard() {
+  const cardEl = document.getElementById("card");
+  const item = instrumentos[flashIndex];
+
+  if (flashFront === "imagem") {
+    cardEl.innerHTML = `
+      ${getImageHTML(item)}
+      <h2 class="title">Flashcard</h2>
+      <p class="desc">Frente: imagem do instrumento</p>
+      <div class="controls">
+        <button class="action-btn" type="button" onclick="prevFlash()">Anterior</button>
+        <button class="action-btn" type="button" onclick="flipFlash()">Virar</button>
+        <button class="action-btn" type="button" onclick="nextFlash()">Próximo</button>
+      </div>
+    `;
+  } else {
+    cardEl.innerHTML = `
+      <div class="visual">${item.nome}</div>
+      <h2 class="title">${item.nome}</h2>
+      <p class="desc">Tempo cirúrgico: ${item.tempo}</p>
+      <div class="controls">
+        <button class="action-btn" type="button" onclick="prevFlash()">Anterior</button>
+        <button class="action-btn" type="button" onclick="flipFlash()">Voltar</button>
+        <button class="action-btn" type="button" onclick="nextFlash()">Próximo</button>
+      </div>
+    `;
+  }
+
+  updateProgress((flashIndex + 1) / instrumentos.length * 100);
+}
+
+function registrarErro(nome) {
+  errosPorInstrumento[nome] = (errosPorInstrumento[nome] || 0) + 1;
+}
+
+function getAdaptivePool() {
+  const pool = [];
+  instrumentos.forEach((item) => {
+    const peso = 1 + Math.min(errosPorInstrumento[item.nome] || 0, 6);
+    for (let i = 0; i < peso; i++) {
+      pool.push(item);
+    }
+  });
+  return pool;
+}
+
+function startQuiz() {
+  clearTimer();
+  waitingNext = false;
+  quizScore = 0;
+  quizIndex = 0;
+
+  const pool = shuffle(getAdaptivePool()).slice(0, instrumentos.length);
+  quizPerguntas = shuffle(pool);
+
+  document.getElementById("timer").classList.remove("hidden");
+  renderQuizQuestion();
+  renderStats();
+}
+
+function renderQuizQuestion() {
+  if (quizIndex >= quizPerguntas.length) {
+    showQuizFinal();
+    return;
+  }
+
+  const item = quizPerguntas[quizIndex];
+  const opcoes = shuffle([item.tempo, ...shuffle(tempos.filter((t) => t !== item.tempo)).slice(0, 3)]);
+  const cardEl = document.getElementById("card");
+
+  cardEl.innerHTML = `
+    ${getImageHTML(item)}
+    <h2 class="title">Em qual tempo cirúrgico é usado?</h2>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="controls">
+      <button class="action-btn hidden" id="nextBtn" type="button" onclick="nextQuizQuestion()">Próxima</button>
+    </div>
+  `;
+
+  const optionsDiv = document.getElementById("options");
+  opcoes.forEach((tempo) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "option-btn";
+    btn.textContent = tempo;
+    btn.onclick = () => checkQuizAnswer(btn, tempo);
+    optionsDiv.appendChild(btn);
+  });
+
+  updateProgress((quizIndex / quizPerguntas.length) * 100);
+  startTimer();
+  renderStats();
+}
+
+function startTimer() {
+  clearTimer();
+  tempoRestante = difficultyTimes[difficulty];
+  const timerEl = document.getElementById("timer");
+  timerEl.textContent = `Tempo: ${tempoRestante}s`;
+
+  timerRef = setInterval(() => {
+    tempoRestante -= 1;
+    timerEl.textContent = `Tempo: ${tempoRestante}s`;
+    if (tempoRestante <= 0) {
+      clearTimer();
+      handleTimeout();
+    }
+  }, 1000);
+}
+
+function clearTimer() {
+  if (timerRef) {
+    clearInterval(timerRef);
+    timerRef = null;
+  }
+}
+
+function lockOptions() {
+  const buttons = document.querySelectorAll(".option-btn");
+  buttons.forEach((b) => {
+    b.disabled = true;
+  });
+}
+
+function checkQuizAnswer(button, resposta) {
+  if (waitingNext) return;
+  waitingNext = true;
+  clearTimer();
+
+  const item = quizPerguntas[quizIndex];
+  const correta = item.tempo;
+  const feedbackEl = document.getElementById("feedback");
+
+  lockOptions();
+
+  if (resposta === correta) {
+    quizScore += 1;
+    button.classList.add("correct");
+    feedbackEl.textContent = "✔ Correto!";
+  } else {
+    registrarErro(item.nome);
+    button.classList.add("wrong");
+    feedbackEl.textContent = `✖ Errado! Resposta correta: ${correta}`;
+
+    const buttons = document.querySelectorAll(".option-btn");
+    buttons.forEach((b) => {
+      if (b.textContent === correta) {
+        b.classList.add("correct");
+      }
+    });
+  }
+
+  document.getElementById("nextBtn").classList.remove("hidden");
+  renderStats();
+}
+
+function handleTimeout() {
+  if (waitingNext) return;
+  waitingNext = true;
+
+  const item = quizPerguntas[quizIndex];
+  const correta = item.tempo;
+  registrarErro(item.nome);
+
+  lockOptions();
+
+  const buttons = document.querySelectorAll(".option-btn");
+  buttons.forEach((b) => {
+    if (b.textContent === correta) {
+      b.classList.add("correct");
+    }
+  });
+
+  document.getElementById("feedback").textContent = `⏰ Tempo esgotado! Resposta correta: ${correta}`;
+  document.getElementById("nextBtn").classList.remove("hidden");
+  renderStats();
+}
+
+function nextQuizQuestion() {
+  waitingNext = false;
+  quizIndex += 1;
+  renderQuizQuestion();
+}
+
+function instrumentoMaisErrado() {
+  let nome = "Nenhum";
+  let totalErros = 0;
+
+  Object.keys(errosPorInstrumento).forEach((instrumento) => {
+    if (errosPorInstrumento[instrumento] > totalErros) {
+      nome = instrumento;
+      totalErros = errosPorInstrumento[instrumento];
+    }
+  });
+
+  return `${nome} (${totalErros} erros)`;
+}
+
+function saveHistoricoFinal() {
+  const total = quizPerguntas.length;
+  const percentual = total ? Number(((quizScore / total) * 100).toFixed(1)) : 0;
+
+  historicoPontuacoes.push({
+    data: new Date().toLocaleString("pt-BR"),
+    dificuldade: difficulty,
+    acertos: quizScore,
+    total,
+    percentual
+  });
+
+  if (historicoPontuacoes.length > 12) {
+    historicoPontuacoes.shift();
+  }
+
+  saveStorage();
+}
+
+function showQuizFinal() {
+  clearTimer();
+  saveHistoricoFinal();
+  document.getElementById("timer").classList.add("hidden");
+
+  const total = quizPerguntas.length;
+  const percentual = total ? ((quizScore / total) * 100).toFixed(1) : "0.0";
+  const ultima = historicoPontuacoes[historicoPontuacoes.length - 1];
+
+  document.getElementById("card").innerHTML = `
+    <h2 class="title">Resultado Final</h2>
+    <p class="desc">Você acertou ${quizScore} de ${total}</p>
+    <p class="desc">Percentual: ${percentual}%</p>
+    <p class="desc">Dificuldade: ${ultima.dificuldade}</p>
+    <h3 class="title">Instrumento que você mais erra</h3>
+    <p class="desc">${instrumentoMaisErrado()}</p>
+    <div class="controls">
+      <button class="action-btn" type="button" onclick="startQuiz()">Refazer Quiz</button>
+      <button class="action-btn" type="button" onclick="setMode('flashcard')">Ir para Flashcards</button>
+    </div>
+  `;
+
+  updateProgress(100);
+  renderStats();
+}
+
+function renderStats() {
+  const ultimo = historicoPontuacoes[historicoPontuacoes.length - 1];
+  const historicoTxt = ultimo
+    ? `Último quiz: ${ultimo.acertos}/${ultimo.total} (${ultimo.percentual}%)`
+    : "Último quiz: sem histórico";
+
+  const estatisticaAtual = mode === "quiz"
+    ? `Quiz atual: ${quizScore}/${quizPerguntas.length || instrumentos.length}`
+    : `Flashcards: ${flashIndex + 1}/${instrumentos.length}`;
+
+  document.getElementById("stats").innerHTML = `
+    <span>${estatisticaAtual}</span>
+    <span>${historicoTxt}</span>
+    <span>Mais erro: ${instrumentoMaisErrado()}</span>
+  `;
+}
+
+function updateProgress(value) {
+  document.getElementById("progressBar").style.width = `${Math.max(0, Math.min(100, value)).toFixed(1)}%`;
+}
+
+setDifficulty("medio");
+setMode("flashcard");
+</script>
+</body>
+</html>
