@@ -2,38 +2,62 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz Instrumentos Cirúrgicos</title>
-
 <style>
+* { box-sizing: border-box; }
+
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #0f4c81, #1e88e5);
   margin: 0;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  padding: 20px;
 }
 
 .container {
   background: white;
-  width: 520px;
-  padding: 30px;
+  width: min(620px, 100%);
+  padding: 24px;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   text-align: center;
 }
 
 h2 {
-  margin-bottom: 10px;
+  margin: 0 0 8px;
   color: #0f4c81;
 }
 
-img {
-  width: 200px;
-  height: 150px;
-  object-fit: contain;
-  margin-bottom: 15px;
+.subtitle {
+  margin: 0 0 14px;
+  color: #406e98;
+}
+
+.difficulty {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.difficulty-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 7px 12px;
+  cursor: pointer;
+  background: #e3f2fd;
+  color: #0f4c81;
+  font-weight: 700;
+}
+
+.difficulty-btn.active {
+  background: #0f4c81;
+  color: white;
 }
 
 .progress-container {
@@ -41,7 +65,7 @@ img {
   height: 10px;
   background: #e0e0e0;
   border-radius: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 14px;
   overflow: hidden;
 }
 
@@ -50,6 +74,13 @@ img {
   width: 0%;
   background: #1e88e5;
   transition: width 0.4s ease;
+}
+
+.stats {
+  margin-bottom: 8px;
+  color: #0f4c81;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .timer {
@@ -61,11 +92,34 @@ img {
 .score {
   margin-bottom: 10px;
   font-weight: bold;
+  color: #0f4c81;
+}
+
+.visual {
+  width: 240px;
+  height: 170px;
+  margin: 0 auto 12px;
+  border-radius: 12px;
+  background: #f1f7ff;
+  border: 1px solid #d1e4f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4d7397;
+  font-weight: 700;
+  padding: 12px;
+}
+
+.visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .question {
   font-size: 17px;
   margin-bottom: 15px;
+  color: #0f4c81;
 }
 
 .option {
@@ -79,6 +133,8 @@ img {
   cursor: pointer;
   transition: 0.3s;
   font-size: 15px;
+  color: #0f4c81;
+  font-weight: 600;
 }
 
 .option:hover {
@@ -87,18 +143,19 @@ img {
 
 .correct {
   background: #4caf50 !important;
-  color: white;
+  color: white !important;
 }
 
 .wrong {
   background: #e53935 !important;
-  color: white;
+  color: white !important;
 }
 
 .feedback {
   margin-top: 10px;
   font-weight: bold;
-  height: 25px;
+  min-height: 25px;
+  color: #0f4c81;
 }
 
 .next-btn {
@@ -110,14 +167,23 @@ img {
   color: white;
   cursor: pointer;
   display: none;
+  font-weight: 700;
 }
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="container" id="container">
   <h2>Quiz - Tempo Cirúrgico</h2>
+  <p class="subtitle">Simulação prática com treino adaptativo por erros.</p>
+
+  <div class="difficulty">
+    <button id="facilBtn" class="difficulty-btn" type="button" onclick="setDificuldade('facil')">Fácil (20s)</button>
+    <button id="medioBtn" class="difficulty-btn active" type="button" onclick="setDificuldade('medio')">Médio (15s)</button>
+    <button id="dificilBtn" class="difficulty-btn" type="button" onclick="setDificuldade('dificil')">Difícil (10s)</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
 
   <div class="progress-container">
     <div class="progress-bar" id="progressBar"></div>
@@ -126,26 +192,16 @@ img {
   <div class="timer" id="timer">Tempo: 15s</div>
   <div class="score" id="score">Pontuação: 0</div>
 
-  <img id="instrumentImage" src="" alt="Instrumento">
+  <div class="visual" id="instrumentVisual"></div>
 
   <div class="question" id="question"></div>
   <div id="options"></div>
   <div class="feedback" id="feedback"></div>
 
-  <button class="next-btn" onclick="nextQuestion()">Próxima</button>
+  <button class="next-btn" id="nextBtn" type="button" onclick="nextQuestion()">Próxima</button>
 </div>
 
-
 <script>
-
-const dificuldade = prompt("Escolha dificuldade: facil, medio ou dificil").toLowerCase();
-
-let tempoPorPergunta = 15;
-
-if (dificuldade === "facil") tempoPorPergunta = 20;
-if (dificuldade === "medio") tempoPorPergunta = 15;
-if (dificuldade === "dificil") tempoPorPergunta = 10;
-
 const instrumentos = [
   { nome: "Pinça Kelly", tempo: "Hemostasia", imagem: "imagens/kelly.jpg" },
   { nome: "Tesoura Metzenbaum", tempo: "Diérese", imagem: "imagens/metzenbaum.jpg" },
@@ -164,55 +220,164 @@ const instrumentos = [
 ];
 
 const tempos = ["Diérese", "Hemostasia", "Exposição", "Síntese", "Especial"];
+const temposDificuldade = { facil: 20, medio: 15, dificil: 10 };
+
+let dificuldade = "medio";
+let tempoPorPergunta = temposDificuldade[dificuldade];
 
 let currentQuestion = 0;
 let score = 0;
-let perguntas = shuffle([...instrumentos]);
-
+let perguntas = [];
 let tempoRestante = tempoPorPergunta;
-let intervalo;
+let intervalo = null;
+let aguardandoProxima = false;
 
 let errosPorInstrumento = JSON.parse(localStorage.getItem("errosInstrumentos")) || {};
+let historicoPontuacoes = JSON.parse(localStorage.getItem("historicoPontuacoes")) || [];
+
+function saveStorage() {
+  localStorage.setItem("errosInstrumentos", JSON.stringify(errosPorInstrumento));
+  localStorage.setItem("historicoPontuacoes", JSON.stringify(historicoPontuacoes));
+}
 
 function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function instrumentoMaisErrado() {
+  let nome = "Nenhum";
+  let total = 0;
+
+  Object.keys(errosPorInstrumento).forEach((instrumento) => {
+    if (errosPorInstrumento[instrumento] > total) {
+      total = errosPorInstrumento[instrumento];
+      nome = instrumento;
+    }
+  });
+
+  return `${nome} (${total} erros)`;
+}
+
+function updateStats() {
+  const ultima = historicoPontuacoes[historicoPontuacoes.length - 1];
+  const ultimoTxt = ultima
+    ? `Último quiz: ${ultima.acertos}/${ultima.total} (${ultima.percentual}%)`
+    : "Último quiz: sem histórico";
+
+  document.getElementById("stats").textContent = `${ultimoTxt} | Mais erro: ${instrumentoMaisErrado()}`;
+}
+
+function registrarErro(nome) {
+  errosPorInstrumento[nome] = (errosPorInstrumento[nome] || 0) + 1;
+  saveStorage();
+}
+
+function getAdaptivePool() {
+  const pool = [];
+  instrumentos.forEach((item) => {
+    const peso = 1 + Math.min(errosPorInstrumento[item.nome] || 0, 6);
+    for (let i = 0; i < peso; i++) {
+      pool.push(item);
+    }
+  });
+  return pool;
+}
+
+function updateProgress() {
+  const progress = (currentQuestion / perguntas.length) * 100;
+  document.getElementById("progressBar").style.width = progress.toFixed(1) + "%";
+}
+
+function setVisual(item) {
+  const visual = document.getElementById("instrumentVisual");
+  visual.innerHTML = `<img src="${item.imagem}" alt="${item.nome}" onerror="this.parentElement.textContent='${item.nome}'; this.remove();">`;
+}
+
+function clearTimer() {
+  if (intervalo) {
+    clearInterval(intervalo);
+    intervalo = null;
+  }
 }
 
 function startTimer() {
+  clearTimer();
   tempoRestante = tempoPorPergunta;
-  document.getElementById("timer").innerText = `Tempo: ${tempoRestante}s`;
+  document.getElementById("timer").textContent = `Tempo: ${tempoRestante}s`;
 
   intervalo = setInterval(() => {
-    tempoRestante--;
-    document.getElementById("timer").innerText = `Tempo: ${tempoRestante}s`;
+    tempoRestante -= 1;
+    document.getElementById("timer").textContent = `Tempo: ${tempoRestante}s`;
 
     if (tempoRestante <= 0) {
-      clearInterval(intervalo);
-      registrarErro(perguntas[currentQuestion].nome);
-      bloquearRespostas();
-      document.getElementById("feedback").innerText =
-        `⏰ Tempo esgotado! Resposta: ${perguntas[currentQuestion].tempo}`;
-      document.querySelector(".next-btn").style.display = "inline-block";
+      clearTimer();
+      handleTimeout();
     }
   }, 1000);
 }
 
-function loadQuestion() {
-  const questionData = perguntas[currentQuestion];
+function bloquearRespostas() {
+  clearTimer();
+  const allButtons = document.querySelectorAll(".option");
+  allButtons.forEach((btn) => {
+    btn.disabled = true;
+  });
+}
 
-  document.getElementById("instrumentImage").src = questionData.imagem;
-  document.getElementById("question").innerText =
-    `Em qual tempo cirúrgico é usado este instrumento?`;
+function showNextButton() {
+  document.getElementById("nextBtn").style.display = "inline-block";
+}
+
+function hideNextButton() {
+  document.getElementById("nextBtn").style.display = "none";
+}
+
+function handleTimeout() {
+  if (aguardandoProxima) return;
+  aguardandoProxima = true;
+
+  const item = perguntas[currentQuestion];
+  registrarErro(item.nome);
+  bloquearRespostas();
+
+  const allButtons = document.querySelectorAll(".option");
+  allButtons.forEach((btn) => {
+    if (btn.innerText === item.tempo) {
+      btn.classList.add("correct");
+    }
+  });
+
+  document.getElementById("feedback").innerText = `⏰ Tempo esgotado! Resposta correta: ${item.tempo}`;
+  showNextButton();
+  updateStats();
+}
+
+function loadQuestion() {
+  if (currentQuestion >= perguntas.length) {
+    showFinal();
+    return;
+  }
+
+  aguardandoProxima = false;
+  const questionData = perguntas[currentQuestion];
+  setVisual(questionData);
+
+  document.getElementById("question").innerText = "Em qual tempo cirúrgico é usado este instrumento?";
 
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
   document.getElementById("feedback").innerText = "";
-  document.querySelector(".next-btn").style.display = "none";
+  hideNextButton();
 
   let alternativas = [questionData.tempo];
 
   while (alternativas.length < 4) {
-    let tempoAleatorio = tempos[Math.floor(Math.random() * tempos.length)];
+    const tempoAleatorio = tempos[Math.floor(Math.random() * tempos.length)];
     if (!alternativas.includes(tempoAleatorio)) {
       alternativas.push(tempoAleatorio);
     }
@@ -220,10 +385,11 @@ function loadQuestion() {
 
   alternativas = shuffle(alternativas);
 
-  alternativas.forEach(opcao => {
+  alternativas.forEach((opcao) => {
     const button = document.createElement("button");
     button.innerText = opcao;
     button.classList.add("option");
+    button.type = "button";
     button.onclick = () => checkAnswer(button, opcao);
     optionsDiv.appendChild(button);
   });
@@ -232,21 +398,10 @@ function loadQuestion() {
   startTimer();
 }
 
-function registrarErro(nome) {
-  if (!errosPorInstrumento[nome]) {
-    errosPorInstrumento[nome] = 0;
-  }
-  errosPorInstrumento[nome]++;
-  localStorage.setItem("errosInstrumentos", JSON.stringify(errosPorInstrumento));
-}
-
-function bloquearRespostas() {
-  clearInterval(intervalo);
-  const allButtons = document.querySelectorAll(".option");
-  allButtons.forEach(btn => btn.disabled = true);
-}
-
 function checkAnswer(button, resposta) {
+  if (aguardandoProxima) return;
+  aguardandoProxima = true;
+
   bloquearRespostas();
 
   const correta = perguntas[currentQuestion].tempo;
@@ -255,15 +410,14 @@ function checkAnswer(button, resposta) {
 
   if (resposta === correta) {
     button.classList.add("correct");
-    score++;
+    score += 1;
     document.getElementById("feedback").innerText = "✔ Correto!";
   } else {
     registrarErro(nomeInstrumento);
     button.classList.add("wrong");
-    document.getElementById("feedback").innerText =
-      `✖ Errado! Resposta correta: ${correta}`;
+    document.getElementById("feedback").innerText = `✖ Errado! Resposta correta: ${correta}`;
 
-    allButtons.forEach(btn => {
+    allButtons.forEach((btn) => {
       if (btn.innerText === correta) {
         btn.classList.add("correct");
       }
@@ -271,11 +425,12 @@ function checkAnswer(button, resposta) {
   }
 
   document.getElementById("score").innerText = `Pontuação: ${score}`;
-  document.querySelector(".next-btn").style.display = "inline-block";
+  updateStats();
+  showNextButton();
 }
 
 function nextQuestion() {
-  currentQuestion++;
+  currentQuestion += 1;
 
   if (currentQuestion < perguntas.length) {
     loadQuestion();
@@ -284,44 +439,73 @@ function nextQuestion() {
   }
 }
 
-function updateProgress() {
-  const progress = ((currentQuestion) / perguntas.length) * 100;
-  document.getElementById("progressBar").style.width = progress + "%";
-}
+function saveHistoricoFinal() {
+  const total = perguntas.length;
+  const percentual = total ? Number(((score / total) * 100).toFixed(1)) : 0;
 
-function instrumentoMaisErrado() {
-  let maxErro = 0;
-  let instrumento = "Nenhum";
+  historicoPontuacoes.push({
+    data: new Date().toLocaleString("pt-BR"),
+    dificuldade,
+    acertos: score,
+    total,
+    percentual
+  });
 
-  for (let nome in errosPorInstrumento) {
-    if (errosPorInstrumento[nome] > maxErro) {
-      maxErro = errosPorInstrumento[nome];
-      instrumento = nome;
-    }
+  if (historicoPontuacoes.length > 12) {
+    historicoPontuacoes.shift();
   }
 
-  return `${instrumento} (${maxErro} erros)`;
+  saveStorage();
 }
 
 function showFinal() {
-  document.querySelector(".container").innerHTML = `
+  clearTimer();
+  saveHistoricoFinal();
+  updateStats();
+
+  const total = perguntas.length;
+  const percentual = total ? ((score / total) * 100).toFixed(1) : "0.0";
+
+  document.getElementById("container").innerHTML = `
     <h2>Resultado Final</h2>
-    <p>Você acertou ${score} de ${perguntas.length}</p>
-    <p>Percentual: ${(score/perguntas.length*100).toFixed(1)}%</p>
+    <p>Você acertou ${score} de ${total}</p>
+    <p>Percentual: ${percentual}%</p>
+    <p>Dificuldade: ${dificuldade}</p>
     <h3>Instrumento que você mais erra:</h3>
     <p>${instrumentoMaisErrado()}</p>
-    <button onclick="location.reload()" class="next-btn" style="display:inline-block">
-      Refazer Quiz
-    </button>
+    <button onclick="location.reload()" class="next-btn" style="display:inline-block" type="button">Refazer Quiz</button>
   `;
 }
 
-loadQuestion();
+function startQuiz() {
+  clearTimer();
+  currentQuestion = 0;
+  score = 0;
+  aguardandoProxima = false;
 
+  const pool = shuffle(getAdaptivePool()).slice(0, instrumentos.length);
+  perguntas = shuffle(pool);
+
+  document.getElementById("score").innerText = "Pontuação: 0";
+  document.getElementById("progressBar").style.width = "0%";
+  updateStats();
+  loadQuestion();
+}
+
+function setDificuldade(nivel) {
+  dificuldade = nivel;
+  tempoPorPergunta = temposDificuldade[nivel];
+
+  document.getElementById("facilBtn").classList.toggle("active", nivel === "facil");
+  document.getElementById("medioBtn").classList.toggle("active", nivel === "medio");
+  document.getElementById("dificilBtn").classList.toggle("active", nivel === "dificil");
+
+  startQuiz();
+}
+
+updateStats();
+startQuiz();
 </script>
-
-
-
 
 </body>
 </html>
